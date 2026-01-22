@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PageHeader from "../components/layout/PageHeader";
 
-const TicketSupport = () => {
+const Support = () => {
   const [ticket, setTicket] = useState({
     title: "",
     description: "",
@@ -56,4 +56,4 @@ const TicketSupport = () => {
   );
 };
 
-export default TicketSupport;
+export default Support;
