@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PageHeader from "../components/layout/PageHeader";
 
-const FeePayment = () => {
+const Fees = () => {
   const [form, setForm] = useState({
     year: "",
     semester: "",
@@ -119,4 +119,4 @@ const FeePayment = () => {
   );
 };
 
-export default FeePayment;
+export default Fees;
