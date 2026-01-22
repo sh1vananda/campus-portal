@@ -9,4 +9,4 @@ const Events = () => (
     </div>
 );
 
-export default Events;
+export default Calender;
