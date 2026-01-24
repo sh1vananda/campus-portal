@@ -4,12 +4,39 @@ import { Calendar as CalendarIcon, MapPin, Clock, ExternalLink } from 'lucide-re
 import { useEvents } from '../hooks/useEvents';
 
 const Events = () => {
-    const { events, loading } = useEvents();
+    const { events, loading, error } = useEvents();
+
+    const formatTime = (timeStr) => {
+        if (!timeStr) return '';
+        if (timeStr.includes('AM') || timeStr.includes('PM')) return timeStr;
+
+        try {
+            const [hours, minutes] = timeStr.split(':');
+            const hour = parseInt(hours);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const hour12 = hour % 12 || 12;
+            return `${hour12}:${minutes} ${ampm}`;
+        } catch (e) {
+            return timeStr;
+        }
+    };
 
     if (loading) {
         return (
             <div className="py-8 flex justify-center items-center min-h-[400px]">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="py-8 flex flex-col justify-center items-center min-h-[400px] text-center">
+                <div className="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-4">
+                    <CalendarIcon size={32} />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900">Couldn't load events</h3>
+                <p className="text-sm text-slate-500 mt-1 max-w-xs">{error}</p>
             </div>
         );
     }
@@ -23,7 +50,7 @@ const Events = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {events.map((event) => (
-                    <div key={event.title} className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm shadow-slate-200/50 hover:shadow-md transition-all">
+                    <div key={event._id} className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm shadow-slate-200/50 hover:shadow-md transition-all">
                         <div className="flex justify-between items-start mb-4">
                             <div className="px-3 py-1 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-700 text-[10px] font-bold uppercase tracking-widest">
                                 {event.category}
@@ -39,7 +66,7 @@ const Events = () => {
                             </div>
                             <div className="flex items-center gap-3 text-slate-600 text-sm">
                                 <Clock size={16} className="text-slate-400" />
-                                <span>{event.time}</span>
+                                <span>{formatTime(event.time)}</span>
                             </div>
                             <div className="flex items-center gap-3 text-slate-600 text-sm">
                                 <MapPin size={16} className="text-slate-400" />

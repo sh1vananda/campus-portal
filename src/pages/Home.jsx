@@ -119,7 +119,7 @@ const Home = () => {
                     items={events.slice(0, 3)}
                     isLoading={eventsLoading}
                     renderItem={(event) => (
-                        <div key={event.title} className="group flex gap-5 p-5 rounded-[24px] border border-transparent hover:border-slate-100 hover:bg-slate-50/50 transition-all cursor-pointer h-[110px]">
+                        <div key={event._id} className="group flex gap-5 p-5 rounded-[24px] border border-transparent hover:border-slate-100 hover:bg-slate-50/50 transition-all cursor-pointer h-[110px]">
                             <div className="w-12 h-12 bg-slate-900 rounded-xl flex-shrink-0 flex items-center justify-center text-white group-hover:bg-indigo-600 transition-colors shadow-lg shadow-slate-900/10">
                                 <Bell size={20} />
                             </div>
