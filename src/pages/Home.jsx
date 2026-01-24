@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PageHeader from '../components/layout/PageHeader';
 import { initialAssignmentsList } from './Assignments';
-import { eventsList } from './Events';
+import { useEvents } from '../hooks/useEvents';
 import { Calendar, Clock, ArrowRight, BookOpen, Bell } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ import campus2 from '../assets/images/campus2.png';
 import campus3 from '../assets/images/campus3.png';
 
 const Home = () => {
+    const { events, loading: eventsLoading } = useEvents();
     const [currentSlide, setCurrentSlide] = useState(0);
     const slides = [
         {
@@ -115,9 +116,10 @@ const Home = () => {
                     title="Events"
                     subtitle="Don't miss out on campus life"
                     link="/events"
-                    items={eventsList.slice(0, 3)}
+                    items={events.slice(0, 3)}
+                    isLoading={eventsLoading}
                     renderItem={(event) => (
-                        <div key={event.id} className="group flex gap-5 p-5 rounded-[24px] border border-transparent hover:border-slate-100 hover:bg-slate-50/50 transition-all cursor-pointer h-[110px]">
+                        <div key={event.title} className="group flex gap-5 p-5 rounded-[24px] border border-transparent hover:border-slate-100 hover:bg-slate-50/50 transition-all cursor-pointer h-[110px]">
                             <div className="w-12 h-12 bg-slate-900 rounded-xl flex-shrink-0 flex items-center justify-center text-white group-hover:bg-indigo-600 transition-colors shadow-lg shadow-slate-900/10">
                                 <Bell size={20} />
                             </div>
@@ -127,7 +129,7 @@ const Home = () => {
                                         <h4 className="font-bold text-slate-900 group-hover:text-indigo-600 transition-colors truncate">{event.title}</h4>
                                         <span className="flex-shrink-0 text-[9px] font-black text-slate-400 border border-slate-100 px-2 py-0.5 rounded-lg uppercase tracking-widest">{event.category}</span>
                                     </div>
-                                    <p className="text-[11px] text-slate-400 mt-0.5 truncate">{event.location}</p>
+                                    <p className="text-[11px] text-slate-400 mt-0.5 truncate">{event.venue}</p>
                                 </div>
                                 <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 tracking-widest">
                                     <Calendar size={12} className="text-indigo-600" />
