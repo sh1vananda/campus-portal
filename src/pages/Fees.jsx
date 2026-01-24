@@ -62,7 +62,7 @@ const Fee = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-200 flex items-center justify-center p-6">
+<div className="min-h-screen bg-white flex items-center justify-center p-6">
       <form
         onSubmit={handleSubmit}
         className="bg-white w-full max-w-xl p-8 rounded-2xl shadow-xl space-y-5"
@@ -127,12 +127,13 @@ const Fee = () => {
           error={errors.bank}
         />
 
-        <button
-          type="submit"
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-semibold transition"
-        >
-          Pay ₹{form.amount || 0}
-        </button>
+       <button
+  type="submit"
+  className="w-full bg-slate-900 hover:bg-slate-800 text-white py-3 rounded-xl font-semibold transition"
+>
+  Pay ₹{form.amount || 0}
+</button>
+
       </form>
     </div>
   );
