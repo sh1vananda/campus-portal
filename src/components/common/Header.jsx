@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Menu, Bell, User, LogOut } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
@@ -24,12 +25,12 @@ const Header = ({ onMenuClick }) => {
         >
           <Menu size={22} />
         </button>
-        <div className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
             <span className="text-slate-900 font-bold text-sm">U</span>
           </div>
           <h1 className="text-sm font-bold tracking-[0.2em] hidden sm:block uppercase">CAMPUS PORTAL</h1>
-        </div>
+        </Link>
       </div>
 
       <div className="flex items-center gap-3">
@@ -55,9 +56,13 @@ const Header = ({ onMenuClick }) => {
                   <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-0.5">{user?.role} Portal</p>
                 </div>
                 <div className="py-1">
-                  <button className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-slate-50 w-full text-left font-medium transition-colors">
+                  <Link
+                    to="/profile"
+                    onClick={() => setShowProfile(false)}
+                    className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-slate-50 w-full text-left font-medium transition-colors"
+                  >
                     <User size={14} className="text-slate-400" /> My Profile
-                  </button>
+                  </Link>
                   <button
                     onClick={logout}
                     className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 w-full text-left font-medium border-t border-slate-100 mt-1 transition-colors"

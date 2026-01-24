@@ -1,15 +1,18 @@
 import PageHeader from "../components/layout/PageHeader";
+import { useAuth } from "../context/AuthContext";
 
 const Profile = () => {
-  // Later: replace with API data
+  const { user } = useAuth();
+
+  // Later: replace with full API data. For now, we merge auth data with mocks.
   const profile = {
-    name: "Vimoh Sharma",
-    regNo: "22BCE0000",
-    role: "Student",
-    program: "B.Tech",
-    branch: "Computer Science Engineering",
-    year: "3rd Year",
-    email: "vimohsharma@gmail.com",
+    name: user?.name || "Vimoh Sharma",
+    regNo: user?.role === 'student' ? "22BCE0000" : "FAC-101",
+    role: user?.role === 'student' ? "Student" : "Faculty",
+    program: user?.role === 'student' ? "B.Tech" : "School of Computer Science",
+    branch: user?.role === 'student' ? "Computer Science Engineering" : "AI & Robotics",
+    year: user?.role === 'student' ? "3rd Year" : "Senior Professor",
+    email: user?.email || "vimohsharma@gmail.com",
     phone: "+91 96674 31417",
     dob: "12 July 2003",
     mentor: "Dr. A. Sharma",
