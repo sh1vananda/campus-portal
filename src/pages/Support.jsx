@@ -9,6 +9,9 @@ const Support = () => {
 
   const [loading, setLoading] = useState(false);
 
+  // 🔹 get rollNo from localStorage
+  const rollNo = localStorage.getItem("rollNo");
+
   const issueOptions = [
     "LMS not working",
     "Cleaning & hygiene issue",
@@ -32,6 +35,11 @@ const Support = () => {
       return;
     }
 
+    if (!rollNo) {
+      alert("User not identified. Please login again.");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -45,6 +53,7 @@ const Support = () => {
           body: JSON.stringify({
             issue: ticket.title,
             description: ticket.description,
+            rollNo, // ✅ added here
           }),
         }
       );
@@ -78,6 +87,7 @@ const Support = () => {
       />
 
       <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+        
         {/* Issue Type */}
         <label className="block text-sm font-semibold text-slate-700 mb-1">
           Issue Type
@@ -109,7 +119,7 @@ const Support = () => {
           className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm mb-6 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-200"
         />
 
-        {/* Submit */}
+        {/* Submit Button */}
         <div className="flex justify-end">
           <button
             onClick={handleSubmit}
