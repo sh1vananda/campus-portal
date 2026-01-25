@@ -1,89 +1,109 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import { GraduationCap, BookOpen, Lock } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
+import { GraduationCap, Lock, Mail, AlertCircle, Loader2 } from 'lucide-react';
 
 const Login = () => {
-    const [role, setRole] = useState('student');
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const handleLogin = (e) => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+
+    const handleLogin = async (e) => {
         e.preventDefault();
-        login(role);
-        navigate('/');
+        setError('');
+        setLoading(true);
+
+        try {
+            await login(email, password);
+            navigate('/');
+        } catch (err) {
+            setError(err.message || 'Invalid email or password');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6">
-            <div className="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
-                <div className="bg-slate-900 p-8 text-center">
-                    <div className="inline-flex items-center justify-center w-12 h-12 bg-white rounded-xl mb-4">
-                        <GraduationCap className="text-slate-900" size={24} />
+            <div className="w-full max-w-md bg-white rounded-[40px] shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+                <div className="bg-slate-900 p-10 text-center">
+                    <div className="inline-flex items-center justify-center w-14 h-14 bg-white rounded-2xl mb-6 shadow-xl shadow-white/10">
+                        <GraduationCap className="text-slate-900" size={28} />
                     </div>
-                    <h1 className="text-white text-xl font-bold tracking-widest uppercase">Campus Portal</h1>
-                    <p className="text-slate-400 text-xs mt-2 uppercase tracking-widest font-medium">University Login System</p>
+                    <h1 className="text-white text-2xl font-black tracking-tight uppercase">Welcome Back</h1>
+                    <p className="text-slate-400 text-xs mt-2 uppercase tracking-[0.2em] font-bold">University Student Portal</p>
                 </div>
 
-                <div className="p-8">
+                <div className="p-10">
                     <form onSubmit={handleLogin} className="space-y-6">
-                        <div className="flex bg-slate-50 p-1 rounded-xl mb-8">
-                            <button
-                                type="button"
-                                onClick={() => setRole('student')}
-                                className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-xs font-bold rounded-lg transition-all ${role === 'student' ? 'bg-white shadow-sm text-slate-900 border border-slate-100' : 'text-slate-400 hover:text-slate-600'
-                                    }`}
-                            >
-                                <GraduationCap size={16} /> Student
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => setRole('teacher')}
-                                className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-xs font-bold rounded-lg transition-all ${role === 'teacher' ? 'bg-white shadow-sm text-slate-900 border border-slate-100' : 'text-slate-400 hover:text-slate-600'
-                                    }`}
-                            >
-                                <BookOpen size={16} /> Faculty
-                            </button>
-                        </div>
+                        {error && (
+                            <div className="p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center gap-3 text-red-600 text-xs font-bold animate-in fade-in slide-in-from-top-1 duration-200">
+                                <AlertCircle size={16} />
+                                {error}
+                            </div>
+                        )}
 
                         <div className="space-y-4">
-                            <div className="relative">
+                            <div className="relative group">
+                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-slate-900 transition-colors">
+                                    <Mail size={18} />
+                                </div>
                                 <input
-                                    type="text"
-                                    placeholder="ID Number"
-                                    className="w-full pl-4 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 transition-all"
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="University Email"
+                                    className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition-all"
                                     required
                                 />
                             </div>
-                            <div className="relative">
+                            <div className="relative group">
+                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-slate-900 transition-colors">
+                                    <Lock size={18} />
+                                </div>
                                 <input
                                     type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     placeholder="Password"
-                                    className="w-full pl-4 pr-10 py-3 bg-slate-50 border border-slate-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 transition-all"
+                                    className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition-all"
                                     required
                                 />
-                                <Lock className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300" size={16} />
                             </div>
                         </div>
 
                         <button
                             type="submit"
-                            className="w-full py-4 bg-slate-900 text-white rounded-xl font-bold text-sm tracking-widest hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10 active:scale-[0.98]"
+                            disabled={loading}
+                            className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-xs tracking-[0.2em] hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
                         >
-                            SIGN IN
+                            {loading ? (
+                                <Loader2 className="animate-spin" size={20} />
+                            ) : (
+                                "SIGN IN"
+                            )}
                         </button>
                     </form>
 
-                    <div className="mt-8 text-center">
-                        <a href="#" className="text-xs text-slate-400 hover:text-slate-900 transition-colors">Forgot your password?</a>
+                    <div className="mt-10 pt-8 border-t border-slate-50 text-center">
+                        <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">
+                            New to portal?{" "}
+                            <Link to="/registration" className="text-slate-900 hover:text-indigo-600 transition-colors">
+                                Register Here
+                            </Link>
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <div className="mt-8 flex gap-8 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+            <div className="mt-10 flex gap-10 text-[10px] font-black text-slate-400 uppercase tracking-widest">
                 <a href="#" className="hover:text-slate-900 transition-colors">Support</a>
-                <a href="#" className="hover:text-slate-900 transition-colors">Privacy Policy</a>
-                <a href="#" className="hover:text-slate-900 transition-colors">Terms of Service</a>
+                <a href="#" className="hover:text-slate-900 transition-colors">Privacy</a>
+                <a href="#" className="hover:text-slate-900 transition-colors">Terms</a>
             </div>
         </div>
     );

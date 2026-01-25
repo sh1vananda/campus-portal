@@ -1,9 +1,8 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    // Unlinked for now: Defaulting to a logged-in student so the portal is accessible directly.
     const [user, setUser] = useState({
         id: '69743ac87b5e9ca2726cbaa3',
         name: 'Vimoh Sharma',
@@ -11,27 +10,74 @@ export const AuthProvider = ({ children }) => {
         email: 'vimoh.sharma@university.edu'
     });
 
-    const login = (role) => {
-        setUser({
-            id: role === 'student' ? '69743ac87b5e9ca2726cbaa3' : '69723ecab0b777f533866905',
-            name: role === 'student' ? 'Vimoh Sharma' : 'Dr. Smith',
-            role: role,
-            email: role === 'student' ? 'vimoh.sharma@university.edu' : 'smith.teacher@university.edu'
-        });
+    const login = async (email, password) => {
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password, role: 'student' })
+            });
+
+            const isJson = response.headers.get('content-type')?.includes('application/json');
+            const data = isJson ? await response.json() : null;
+
+            if (!response.ok) {
+                throw new Error(data?.message || `Server Error: ${response.status}`);
+            }
+
+            const userData = {
+                id: data.userId,
+                role: data.role,
+                name: data.name || 'Student',
+                email: email
+            };
+
+            setUser(userData);
+            localStorage.setItem('portal_user', JSON.stringify(userData));
+            return userData;
+        } catch (error) {
+            console.error('Login error:', error);
+            throw error;
+        }
+    };
+
+    const registerStudent = async (studentData) => {
+        try {
+            const response = await fetch('/api/students', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: studentData.name,
+                    email: studentData.email,
+                    password: studentData.password,
+                    department: studentData.department,
+                    currentYear: studentData.currentYear || '1',
+                    address: studentData.address || ''
+                })
+            });
+
+            const isJson = response.headers.get('content-type')?.includes('application/json');
+
+            if (!response.ok) {
+                const errorData = isJson ? await response.json() : null;
+                const errorText = !isJson ? await response.text() : '';
+                throw new Error(errorData?.message || `Registration failed: ${response.status}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Registration error:', error);
+            throw error;
+        }
     };
 
     const logout = () => {
-        // For now, logout just resets to default student to keep the portal "unlinked"
-        setUser({
-            id: '69743ac87b5e9ca2726cbaa3',
-            name: 'Vimoh Sharma',
-            role: 'student',
-            email: 'vimoh.sharma@university.edu'
-        });
+        setUser(null);
+        localStorage.removeItem('portal_user');
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout, registerStudent }}>
             {children}
         </AuthContext.Provider>
     );

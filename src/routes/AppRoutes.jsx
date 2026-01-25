@@ -28,6 +28,7 @@ const AppRoutes = () => {
     return (
         <Routes>
             <Route path="/login" element={!user ? <Login /> : <Navigate to="/" replace />} />
+            <Route path="/registration" element={!user ? <Registration /> : <Navigate to="/" replace />} />
 
             <Route
                 path="/"
@@ -49,7 +50,6 @@ const AppRoutes = () => {
                 <Route path="events" element={<Events />} />
                 <Route path="calendar" element={<Calendar />} />
                 <Route path="support" element={<Support />} />
-                <Route path="registration" element={<Registration />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="exams" element={<Exams />} />
 

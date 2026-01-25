@@ -17,7 +17,7 @@ export default defineConfig({
       '/api': {
         target: 'https://rest-hhlo.onrender.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '/api'),
+        secure: false,
       },
     },
   },

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
 export const useProfile = () => {
-  const { user } = useAuth(); // expects user.id
+  const { user } = useAuth();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,10 +16,9 @@ export const useProfile = () => {
 
       try {
         setLoading(true);
+        const response = await fetch(`/api/students/${user.id}`);
 
-        const response = await fetch(`/api/profile/${user.id}`);
-
-        if (!response.ok) throw new Error("Failed to fetch profile");
+        if (!response.ok) throw new Error("Failed to fetch profile details");
 
         const data = await response.json();
         setProfile(data);
