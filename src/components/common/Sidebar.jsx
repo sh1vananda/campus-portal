@@ -11,26 +11,33 @@ import {
     ClipboardList,
     GraduationCap,
     CalendarDays,
-    Activity
+    Activity,
+    FilePlus2
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const sidebarItems = [
-    { name: 'Home', icon: HomeIcon, path: '/' },
-    { name: 'Profile', icon: User, path: '/profile' },
-    { name: 'Attendance', icon: Activity, path: '/attendance' },
-    { name: 'Timetable', icon: Clock, path: '/timetable' },
-    { name: 'Exams', icon: ClipboardList, path: '/exams' },
-    { name: 'Assignments', icon: FileText, path: '/assignments' },
-    { name: 'Academic Calendar', icon: CalendarDays, path: '/calendar' },
-    { name: 'Events', icon: Calendar, path: '/events' },
-    { name: 'Fee Payment', icon: CreditCard, path: '/fees' },
-    { name: 'Course Regs', icon: GraduationCap, path: '/registration' },
-    { name: 'Grades', icon: TrendingUp, path: '/grades' },
-    { name: 'Ticketing Support', icon: Ticket, path: '/support' }
+    { name: 'Home', icon: HomeIcon, path: '/', roles: ['student', 'teacher'] },
+    { name: 'Profile', icon: User, path: '/profile', roles: ['student', 'teacher'] },
+    { name: 'Attendance', icon: Activity, path: '/attendance', roles: ['student'] },
+    { name: 'Timetable', icon: Clock, path: '/timetable', roles: ['student'] },
+    { name: 'Exams', icon: ClipboardList, path: '/exams', roles: ['student'] },
+    { name: 'Assignments', icon: FileText, path: '/assignments', roles: ['student'] },
+    { name: 'Academic Calendar', icon: CalendarDays, path: '/calendar', roles: ['student', 'teacher'] },
+    { name: 'Events', icon: Calendar, path: '/events', roles: ['student', 'teacher'] },
+    { name: 'Fee Payment', icon: CreditCard, path: '/fees', roles: ['student'] },
+    { name: 'Course Regs', icon: GraduationCap, path: '/registration', roles: ['student'] },
+    { name: 'Grades', icon: TrendingUp, path: '/grades', roles: ['student'] },
+    { name: 'Ticketing Support', icon: Ticket, path: '/support', roles: ['student', 'teacher'] },
+    { name: 'Create Assignment', icon: FilePlus2, path: '/teacher/assignments/new', roles: ['teacher'] }
 ];
 
 const Sidebar = ({ isOpen, onClose }) => {
+    const { user } = useAuth();
+    const role = user?.role || 'student';
+    const visibleItems = sidebarItems.filter((item) => !item.roles || item.roles.includes(role));
+
     return (
         <>
             <div
@@ -51,7 +58,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 </div>
 
                 <nav className="flex-1 py-4 px-3 space-y-1 overflow-y-auto custom-scrollbar">
-                    {sidebarItems.map((item) => (
+                    {visibleItems.map((item) => (
                         <NavLink
                             key={item.name}
                             to={item.path}

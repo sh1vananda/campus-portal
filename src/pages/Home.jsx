@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PageHeader from '../components/layout/PageHeader';
-import { initialAssignmentsList } from './Assignments';
 import { useEvents } from '../hooks/useEvents';
+import { useAssignments } from '../hooks/useAssignments';
 import { useAuth } from '../context/AuthContext';
 import { Calendar, Clock, ArrowRight, BookOpen, Bell } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -13,6 +13,7 @@ import campus3 from '../assets/images/campus3.png';
 const Home = () => {
     const { user } = useAuth();
     const { events, loading: eventsLoading } = useEvents();
+    const { assignments } = useAssignments();
     const [currentSlide, setCurrentSlide] = useState(0);
     const slides = [
         {
@@ -39,6 +40,31 @@ const Home = () => {
         }, 5000);
         return () => clearInterval(timer);
     }, [slides.length]);
+
+    const normalizeAssignment = (assignment) => {
+        const submissions = assignment?.submissions || [];
+        const status = submissions.length > 0 ? 'submitted' : 'pending';
+        return {
+            id: assignment?._id || assignment?.id,
+            title: assignment?.title || 'Untitled Assignment',
+            course: assignment?.course?.courseName || assignment?.courseName || assignment?.course || 'Course',
+            dueDate: assignment?.dueDate || assignment?.deadline || '',
+            status,
+            weight: assignment?.weight || 10,
+        };
+    };
+
+    const upcomingAssignments = assignments
+        .map(normalizeAssignment)
+        .filter((a) => a.status !== 'submitted')
+        .sort((a, b) => {
+            const aDate = new Date(a.dueDate);
+            const bDate = new Date(b.dueDate);
+            const aTime = Number.isNaN(aDate.getTime()) ? Infinity : aDate.getTime();
+            const bTime = Number.isNaN(bDate.getTime()) ? Infinity : bDate.getTime();
+            return aTime - bTime;
+        })
+        .slice(0, 3);
 
     return (
         <div className="py-8 space-y-12">
@@ -88,9 +114,9 @@ const Home = () => {
                 {/* Left Half: Upcoming Assignments */}
                 <HomeListSection
                     title="Assignments"
-                    subtitle="Due within the next 7 days"
+                    subtitle="Upcoming assignments"
                     link="/assignments"
-                    items={initialAssignmentsList.filter(a => a.status !== 'submitted').slice(0, 3)}
+                    items={upcomingAssignments}
                     renderItem={(assignment) => (
                         <div key={assignment.id} className="group flex gap-5 p-5 rounded-[24px] border border-transparent hover:border-slate-100 hover:bg-slate-50/50 transition-all cursor-pointer h-[110px]">
                             <div className="w-12 h-12 bg-indigo-50 rounded-xl flex-shrink-0 flex items-center justify-center text-indigo-600 group-hover:scale-110 transition-transform">
