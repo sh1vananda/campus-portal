@@ -32,6 +32,8 @@ const sidebarItems = [
     { name: 'Ticketing Support', icon: Ticket, path: '/support', roles: ['student', 'teacher'] },
     { name: 'Create Assignment', icon: FilePlus2, path: '/teacher/assignments/new', roles: ['teacher'] },
     { name: 'Class List', icon: GraduationCap, path: '/teacher/classlist', roles: ['teacher'] }
+    { name: 'Course Allocation', icon: GraduationCap, path: '/teacher/allotcourse', roles: ['teacher'] }
+
 ];
 
 const Sidebar = ({ isOpen, onClose }) => {
