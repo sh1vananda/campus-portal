@@ -7,6 +7,7 @@ const Login = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
 
+    const [role, setRole] = useState('student');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -18,7 +19,7 @@ const Login = () => {
         setLoading(true);
 
         try {
-            await login(email, password);
+            await login(email, password, role);
             navigate('/');
         } catch (err) {
             setError(err.message || 'Invalid email or password');
@@ -30,12 +31,31 @@ const Login = () => {
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6">
             <div className="w-full max-w-md bg-white rounded-[40px] shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
-                <div className="bg-slate-900 p-10 text-center">
+                <div className="bg-slate-900 p-8 text-center">
+                    <div className="flex justify-center mb-6">
+                        <div className="inline-flex p-1 bg-white/5 rounded-2xl border border-white/10">
+                            <button
+                                onClick={() => setRole('student')}
+                                className={`px-6 py-2 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all ${role === 'student' ? 'bg-white text-slate-900 shadow-lg' : 'text-slate-400 hover:text-white'}`}
+                            >
+                                Student
+                            </button>
+                            <button
+                                onClick={() => setRole('teacher')}
+                                className={`px-6 py-2 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all ${role === 'teacher' ? 'bg-white text-slate-900 shadow-lg' : 'text-slate-400 hover:text-white'}`}
+                            >
+                                Faculty
+                            </button>
+                        </div>
+                    </div>
+
                     <div className="inline-flex items-center justify-center w-14 h-14 bg-white rounded-2xl mb-6 shadow-xl shadow-white/10">
                         <GraduationCap className="text-slate-900" size={28} />
                     </div>
-                    <h1 className="text-white text-2xl font-black tracking-tight uppercase">Welcome Back</h1>
-                    <p className="text-slate-400 text-xs mt-2 uppercase tracking-[0.2em] font-bold">University Student Portal</p>
+                    <h1 className="text-white text-2xl font-black tracking-tight uppercase">
+                        {role === 'teacher' ? "Faculty Portal" : "Student Portal"}
+                    </h1>
+                    <p className="text-slate-400 text-xs mt-2 uppercase tracking-[0.2em] font-bold">University Management System</p>
                 </div>
 
                 <div className="p-10">
@@ -56,7 +76,7 @@ const Login = () => {
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="University Email"
+                                    placeholder={role === 'teacher' ? "Faculty Email" : "Student Email"}
                                     className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition-all"
                                     required
                                 />
@@ -84,15 +104,15 @@ const Login = () => {
                             {loading ? (
                                 <Loader2 className="animate-spin" size={20} />
                             ) : (
-                                "SIGN IN"
+                                "SECURE LOGIN"
                             )}
                         </button>
                     </form>
 
                     <div className="mt-10 pt-8 border-t border-slate-50 text-center">
                         <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">
-                            New to portal?{" "}
-                            <Link to="/signup" className="text-slate-900 hover:text-indigo-600 transition-colors">
+                            {role === 'teacher' ? "New faculty member?" : "New to portal?"}{" "}
+                            <Link to={role === 'teacher' ? "/signup-teacher" : "/signup"} className="text-slate-900 hover:text-indigo-600 transition-colors">
                                 Register Here
                             </Link>
                         </p>

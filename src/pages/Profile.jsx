@@ -9,20 +9,20 @@ const Profile = () => {
 
   const profile = {
     name: backendProfile?.name || user?.name || "",
-    rollNo: backendProfile?.rollNo || user?.rollNo || "",
+    identifier: user?.role === 'teacher'
+      ? (backendProfile?.empId || user?.empId || "FACULTY")
+      : (backendProfile?.rollNo || user?.rollNo || ""),
     role: backendProfile?.role || user?.role || "Student",
-    program: backendProfile?.program || "B.Tech",
+    program: backendProfile?.program || (user?.role === 'teacher' ? "" : "B.Tech"),
     branch: backendProfile?.department || user?.department || "",
     year: backendProfile?.currentYear
       ? `${backendProfile.currentYear} Year`
-      : user?.currentYear
-        ? `${user.currentYear} Year`
-        : "",
+      : (user?.role === 'teacher' ? "" : (user?.currentYear ? `${user.currentYear} Year` : "")),
     email: backendProfile?.email || user?.email || "",
     phone: backendProfile?.phone || "",
     dob: backendProfile?.dob || "",
     mentor: backendProfile?.mentor || "",
-    address: backendProfile?.address || "",
+    address: backendProfile?.address || user?.address || "",
   };
 
   const initials = profile.name
@@ -58,18 +58,21 @@ const Profile = () => {
 
             <div>
               <p className="text-lg font-bold text-slate-900">{profile.name}</p>
-              <p className="text-sm text-slate-500">{profile.rollNo}</p>
-              <p className="text-xs font-bold text-indigo-600 mt-1">
+              <p className="text-sm text-slate-500 font-mono tracking-wider">
+                <span className="text-[10px] font-black text-slate-300 mr-2 uppercase">{user?.role === 'teacher' ? 'Emp ID' : 'Roll No'}</span>
+                {profile.identifier}
+              </p>
+              <p className="text-xs font-bold text-indigo-600 mt-1 uppercase tracking-widest">
                 {profile.role}
               </p>
             </div>
           </div>
 
           <div className="mt-6 space-y-4">
-            <InfoRow label="Program" value={profile.program} />
+            {profile.program && <InfoRow label="Program" value={profile.program} />}
             <InfoRow label="Branch" value={profile.branch} />
-            <InfoRow label="Year" value={profile.year} />
-            <InfoRow label="Mentor" value={profile.mentor} />
+            {profile.year && <InfoRow label="Year" value={profile.year} />}
+            {profile.mentor && <InfoRow label="Mentor" value={profile.mentor} />}
           </div>
 
           <button

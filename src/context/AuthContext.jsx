@@ -13,12 +13,13 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
-    const login = async (email, password) => {
+    const login = async (email, password, role = 'student') => {
         try {
-            const response = await fetch('/api/auth/login', {
+            const endpoint = role === 'teacher' ? '/api/auth/login/teacher' : '/api/auth/login';
+            const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password, role: 'student' })
+                body: JSON.stringify({ email, password, role })
             });
 
             const isJson = response.headers.get('content-type')?.includes('application/json');
@@ -31,11 +32,13 @@ export const AuthProvider = ({ children }) => {
             const userData = {
                 id: data.user?._id || data.userId,
                 rollNo: data.user?.rollNo || '',
-                role: data.user?.role || data.role || 'student',
-                name: data.user?.name || 'Student',
+                empId: data.user?.empId || '',
+                role: data.user?.role || data.role || role,
+                name: data.user?.name || 'User',
                 email: data.user?.email || email,
                 department: data.user?.department || '',
-                currentYear: data.user?.currentYear || ''
+                currentYear: data.user?.currentYear || '',
+                courses: data.user?.courses || []
             };
 
             setUser(userData);
@@ -76,13 +79,42 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const registerTeacher = async (teacherData) => {
+        try {
+            const response = await fetch('/api/teachers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    empId: teacherData.empId,
+                    name: teacherData.name,
+                    email: teacherData.email,
+                    password: teacherData.password,
+                    department: teacherData.department,
+                    address: teacherData.address || ''
+                })
+            });
+
+            const isJson = response.headers.get('content-type')?.includes('application/json');
+
+            if (!response.ok) {
+                const errorData = isJson ? await response.json() : null;
+                throw new Error(errorData?.message || `Registration failed: ${response.status}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Teacher Registration error:', error);
+            throw error;
+        }
+    };
+
     const logout = () => {
         setUser(null);
         localStorage.removeItem('portal_user');
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, registerStudent }}>
+        <AuthContext.Provider value={{ user, login, logout, registerStudent, registerTeacher }}>
             {children}
         </AuthContext.Provider>
     );

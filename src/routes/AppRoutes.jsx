@@ -12,6 +12,7 @@ import Events from '../pages/Events';
 import Calendar from '../pages/Calendar';
 import Support from '../pages/Support';
 import Signup from '../pages/Signup';
+import SignupTeacher from '../pages/SignupTeacher';
 import CourseRegistration from '../pages/CourseRegistration';
 import Profile from '../pages/Profile';
 import Exams from '../pages/Exams';
@@ -31,6 +32,7 @@ const AppRoutes = () => {
         <Routes>
             <Route path="/login" element={!user ? <Login /> : <Navigate to="/" replace />} />
             <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/" replace />} />
+            <Route path="/signup-teacher" element={!user ? <SignupTeacher /> : <Navigate to="/" replace />} />
 
             <Route
                 path="/"

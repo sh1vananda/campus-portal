@@ -1,16 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PageHeader from '../../components/layout/PageHeader';
 import { useAssignments } from '../../hooks/useAssignments';
+import { useAuth } from '../../context/AuthContext';
 
 const TeacherAssignmentCreate = () => {
+    const { user } = useAuth();
     const { createAssignment } = useAssignments();
     const [form, setForm] = useState({
         title: '',
         description: '',
         dueDate: '',
         courseCode: '',
-        teacherEmpId: '',
+        teacherEmpId: user?.empId || '',
     });
+
+    useEffect(() => {
+        if (user?.empId) {
+            setForm(prev => ({ ...prev, teacherEmpId: user.empId }));
+        }
+    }, [user]);
     const [submitting, setSubmitting] = useState(false);
     const [feedback, setFeedback] = useState(null);
 
@@ -99,23 +107,12 @@ const TeacherAssignmentCreate = () => {
                             </div>
                         </div>
 
-                        <div>
-                            <label className='block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2'>Teacher Employee ID</label>
-                            <input
-                                type='text'
-                                value={form.teacherEmpId}
-                                onChange={(e) => handleChange('teacherEmpId', e.target.value)}
-                                className='w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm outline-none focus:border-indigo-600 transition-all'
-                                placeholder='2222'
-                            />
-                        </div>
-
                         <button
                             type='submit'
                             disabled={submitting}
-                            className='w-full py-4 bg-indigo-600 text-white rounded-2xl font-black tracking-widest hover:bg-indigo-700 transition-all disabled:opacity-60'
+                            className='w-full py-5 bg-slate-900 text-white rounded-2xl font-black text-xs tracking-[0.2em] hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center mt-4'
                         >
-                            {submitting ? 'Publishing...' : 'Create Assignment'}
+                            {submitting ? 'PUBLISHING...' : 'PUBLISH ASSIGNMENT'}
                         </button>
                     </form>
                 </div>
