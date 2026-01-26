@@ -92,7 +92,7 @@ const Login = () => {
                     <div className="mt-10 pt-8 border-t border-slate-50 text-center">
                         <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">
                             New to portal?{" "}
-                            <Link to="/registration" className="text-slate-900 hover:text-indigo-600 transition-colors">
+                            <Link to="/signup" className="text-slate-900 hover:text-indigo-600 transition-colors">
                                 Register Here
                             </Link>
                         </p>

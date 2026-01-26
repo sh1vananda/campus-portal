@@ -11,7 +11,8 @@ import Fees from '../pages/Fees';
 import Events from '../pages/Events';
 import Calendar from '../pages/Calendar';
 import Support from '../pages/Support';
-import Registration from '../pages/Registration';
+import Signup from '../pages/Signup';
+import CourseRegistration from '../pages/CourseRegistration';
 import Profile from '../pages/Profile';
 import Exams from '../pages/Exams';
 import { useAuth } from '../context/AuthContext';
@@ -28,7 +29,7 @@ const AppRoutes = () => {
     return (
         <Routes>
             <Route path="/login" element={!user ? <Login /> : <Navigate to="/" replace />} />
-            <Route path="/registration" element={!user ? <Registration /> : <Navigate to="/" replace />} />
+            <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/" replace />} />
 
             <Route
                 path="/"
@@ -50,6 +51,7 @@ const AppRoutes = () => {
                 <Route path="events" element={<Events />} />
                 <Route path="calendar" element={<Calendar />} />
                 <Route path="support" element={<Support />} />
+                <Route path="registration" element={<CourseRegistration />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="exams" element={<Exams />} />
 
