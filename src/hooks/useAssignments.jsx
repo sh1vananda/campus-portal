@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
 
 export const useAssignments = () => {
-    const { user } = useAuth();
     const [assignments, setAssignments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -11,43 +9,13 @@ export const useAssignments = () => {
         try {
             setLoading(true);
             setError(null);
-            
-            const rollNo = user?.rollNo;
-            const studentEndpoint = `/api/assignments/student/${rollNo}`;
-            const fallbackEndpoint = '/api/assignments/submissions';
-            
-            console.log('Fetching assignments. User:', user);
-            
-            let response;
-            let endpoint = studentEndpoint;
-            
-            // Try student-specific endpoint first if rollNo exists
-            if (rollNo) {
-                console.log('Trying student-specific endpoint:', studentEndpoint);
-                response = await fetch(studentEndpoint);
-                
-                // If student-specific endpoint fails (404, etc), try fallback
-                if (!response.ok && response.status === 404) {
-                    console.log('Student endpoint not found, trying fallback:', fallbackEndpoint);
-                    response = await fetch(fallbackEndpoint);
-                    endpoint = fallbackEndpoint;
-                }
-            } else {
-                console.log('No rollNo found, using fallback endpoint:', fallbackEndpoint);
-                response = await fetch(fallbackEndpoint);
-                endpoint = fallbackEndpoint;
-            }
-            
+            const response = await fetch('/api/assignments/submissions');
             const isJson = response.headers.get('content-type')?.includes('application/json');
             const data = isJson ? await response.json() : null;
-            
-            console.log('Assignments response from', endpoint, ':', { status: response.status, data });
-            
             if (!response.ok) {
                 throw new Error(data?.message || 'Failed to fetch assignments');
             }
             const list = Array.isArray(data) ? data : data?.assignments || [];
-            console.log('Processed assignments:', list);
             setAssignments(list);
         } catch (err) {
             console.error('Error fetching assignments:', err);
@@ -56,20 +24,14 @@ export const useAssignments = () => {
         } finally {
             setLoading(false);
         }
-    }, [user?.rollNo]);
+    }, []);
 
     useEffect(() => {
         fetchAssignments();
     }, [fetchAssignments]);
 
     const submitAssignment = useCallback(async ({ courseCode, rollNo, fileUrl }) => {
-        const payload = { 
-            courseCode, 
-            rollNo: rollNo || user?.rollNo,
-            fileUrl 
-        };
-        
-        console.log('📤 Submitting assignment with payload:', payload);
+        const payload = { courseCode, rollNo, fileUrl };
 
         const response = await fetch('/api/assignments/submit', {
             method: 'POST',
@@ -80,19 +42,15 @@ export const useAssignments = () => {
         const isJson = response.headers.get('content-type')?.includes('application/json');
         const data = isJson ? await response.json() : null;
         const fallbackText = !isJson ? await response.text() : '';
-        
-        console.log('📥 Submission response:', { status: response.status, data });
 
         if (!response.ok) {
             const message = data?.message || fallbackText || `Assignment submission failed (status ${response.status})`;
             throw new Error(message);
         }
 
-        console.log('🔄 Refreshing assignments after submission...');
         await fetchAssignments();
-        console.log('✅ Assignments refreshed after submission');
         return data;
-    }, [fetchAssignments, user?.rollNo]);
+    }, [fetchAssignments]);
 
     const fetchSubmissionById = useCallback(async (id) => {
         if (!id) return null;
