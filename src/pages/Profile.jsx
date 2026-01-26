@@ -91,15 +91,16 @@ const Profile = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <MiniInfo label="Email" value={profile.email} />
-            <MiniInfo label="Phone" value={profile.phone} />
+           {/* <MiniInfo label="Phone" value={profile.phone} />
             <MiniInfo label="Date of Birth" value={profile.dob} />
             <MiniInfo
               label="Address"
               value={profile.address}
               className="md:col-span-2"
             />
+            */}
           </div>
-
+            
           {/* Footer strip */}
           <div className="mt-6 border border-slate-100 rounded-2xl p-4 bg-slate-50/60">
             <p className="text-xs text-slate-500">

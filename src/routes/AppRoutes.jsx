@@ -18,6 +18,7 @@ import Profile from '../pages/Profile';
 import Exams from '../pages/Exams';
 import TeacherAssignmentCreate from '../pages/teacher/AssignmentCreate';
 import { useAuth } from '../context/AuthContext';
+import ClassList from '../pages/teacher/classList';
 
 const AppRoutes = () => {
     const { user } = useAuth();
@@ -59,7 +60,8 @@ const AppRoutes = () => {
                 <Route path="exams" element={<Exams />} />
 
                 {user?.role === 'teacher' && (
-                    <Route path="teacher/assignments/new" element={<TeacherAssignmentCreate />} />
+                    <><Route path="teacher/assignments/new" element={<TeacherAssignmentCreate />} />
+                    <Route path="teacher/classlist" element={<ClassList />} /></>
                 )}
 
                 {/* Catch-all */}
