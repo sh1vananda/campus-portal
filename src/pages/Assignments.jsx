@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import PageHeader from '../components/layout/PageHeader';
 import { Calendar, Clock, CheckCircle, AlertCircle, FileText, Download, Upload, X } from 'lucide-react';
 import { useAssignments } from '../hooks/useAssignments';
+import { useAuth } from '../context/AuthContext';
 
 const statusColors = {
     submitted: 'bg-green-100 text-green-800 border-green-300',
@@ -62,12 +63,13 @@ const normalizeAssignment = (assignment) => {
 };
 
 const Assignments = () => {
+    const { user } = useAuth();
     const { assignments, loading, error, submitAssignment, fetchSubmissionById } = useAssignments();
 
     const [filter, setFilter] = useState('all');
     const [selectedAssignment, setSelectedAssignment] = useState(null);
     const [showSubmitForm, setShowSubmitForm] = useState(false);
-    const [submissionData, setSubmissionData] = useState({ courseCode: '', rollNo: '', fileUrl: '' });
+    const [submissionData, setSubmissionData] = useState({ courseCode: '', fileUrl: '' });
     const [submitting, setSubmitting] = useState(false);
     const [detailLoading, setDetailLoading] = useState(false);
     const [feedback, setFeedback] = useState(null);
@@ -129,29 +131,39 @@ const Assignments = () => {
     const handleSubmitAssignment = async (e) => {
         e.preventDefault();
         if (!selectedAssignment) return;
-        if (!submissionData.courseCode || !submissionData.rollNo || !submissionData.fileUrl) {
-            setFeedback({ type: 'error', text: 'Course code, roll number, and file URL are required.' });
+        if (!submissionData.courseCode || !submissionData.fileUrl) {
+            setFeedback({ type: 'error', text: 'Course code and file URL are required.' });
             return;
         }
 
         setSubmitting(true);
         setFeedback(null);
         try {
+            const courseCode = submissionData.courseCode
+                || selectedAssignment.__raw?.course?.courseCode
+                || selectedAssignment.__raw?.courseCode
+                || selectedAssignment.courseCode;
+                
+            console.log('📝 Submitting assignment:', { 
+                assignmentId: selectedAssignment.id, 
+                title: selectedAssignment.title,
+                courseCode,
+                rollNo: user?.rollNo 
+            });
+            
             const response = await submitAssignment({
-                courseCode: submissionData.courseCode
-                    || selectedAssignment.__raw?.course?.courseCode
-                    || selectedAssignment.__raw?.courseCode
-                    || selectedAssignment.courseCode,
-                rollNo: submissionData.rollNo,
+                courseCode,
+                rollNo: user?.rollNo,
                 fileUrl: submissionData.fileUrl,
             });
 
-            console.log('Assignment submission response:', response);
+            console.log('✅ Submission successful');
             setFeedback({ type: 'success', text: response?.message || 'Assignment submitted successfully' });
             setShowSubmitForm(false);
-            setSubmissionData({ courseCode: '', rollNo: '', fileUrl: '' });
+            setSubmissionData({ courseCode: '', fileUrl: '' });
+            setSelectedAssignment(null);
         } catch (err) {
-            console.error('Submission error:', err);
+            console.error('❌ Submission error:', err);
             setFeedback({ type: 'error', text: err.message });
         } finally {
             setSubmitting(false);
@@ -220,9 +232,12 @@ const Assignments = () => {
 
                 {error && (
                     <div className='mb-4 px-4 py-3 rounded-lg text-sm bg-red-50 text-red-700 border border-red-200'>
-                        {error}
+                        <p className='font-semibold'>Error loading assignments:</p>
+                        <p>{error}</p>
+                        {!user?.rollNo && <p className='mt-2'>⚠️ Roll number not found. Please ensure you are logged in.</p>}
                     </div>
                 )}
+
 
                 <div className='flex gap-2 mb-6 flex-wrap'>
                     {['all', 'submitted', 'in-progress', 'pending'].map((s) => (
@@ -353,16 +368,6 @@ const Assignments = () => {
                                     onChange={(e) => setSubmissionData({ ...submissionData, courseCode: e.target.value })}
                                     className='w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm outline-none focus:border-indigo-600 transition-all'
                                     placeholder='e.g., CSE103'
-                                />
-                            </div>
-                            <div>
-                                <label className='block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2'>Roll Number</label>
-                                <input
-                                    type='text'
-                                    value={submissionData.rollNo}
-                                    onChange={(e) => setSubmissionData({ ...submissionData, rollNo: e.target.value })}
-                                    className='w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm outline-none focus:border-indigo-600 transition-all'
-                                    placeholder='e.g., 25Y001'
                                 />
                             </div>
                             <div>
