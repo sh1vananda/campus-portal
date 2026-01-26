@@ -1,22 +1,24 @@
 import PageHeader from "../components/layout/PageHeader";
 import { useAuth } from "../context/AuthContext";
+import { useProfile } from "../hooks/useProfile";
+import { Loader2 } from "lucide-react";
 
 const Profile = () => {
   const { user } = useAuth();
+  const { profile: backendProfile, loading, error } = useProfile();
 
-  // Later: replace with full API data. For now, we merge auth data with mocks.
   const profile = {
-    name: user?.name || "Vimoh Sharma",
-    regNo: user?.role === 'student' ? "22BCE0000" : "FAC-101",
-    role: user?.role === 'student' ? "Student" : "Faculty",
-    program: user?.role === 'student' ? "B.Tech" : "School of Computer Science",
-    branch: user?.role === 'student' ? "Computer Science Engineering" : "AI & Robotics",
-    year: user?.role === 'student' ? "3rd Year" : "Senior Professor",
-    email: user?.email || "vimohsharma@gmail.com",
-    phone: "+91 96674 31417",
-    dob: "12 July 2003",
-    mentor: "Dr. A. Sharma",
-    address: "Noida, India",
+    name: backendProfile?.name || user?.name || "Vimoh Sharma",
+    rollNo: backendProfile?.rollNo || user?.rollNo || "22BCE0000",
+    role: backendProfile?.role || user?.role || "Student",
+    program: backendProfile?.program || "B.Tech",
+    branch: backendProfile?.department || "Computer Science Engineering",
+    year: backendProfile?.currentYear ? `${backendProfile.currentYear} Year` : "3rd Year",
+    email: backendProfile?.email || user?.email || "vimohsharma@gmail.com",
+    phone: backendProfile?.phone || "+91 96674 31417",
+    dob: backendProfile?.dob || "12 July 2003",
+    mentor: backendProfile?.mentor || "Dr. A. Sharma",
+    address: backendProfile?.address || "Noida, India",
   };
 
   const initials = profile.name
@@ -26,11 +28,20 @@ const Profile = () => {
     .join("")
     .toUpperCase();
 
+  if (loading && !backendProfile) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
+        <Loader2 className="animate-spin text-slate-900 mb-4" size={40} />
+        <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">Authenticating Profile...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="py-8">
       <PageHeader
         title="Profile"
-        subtitle="Your personal and academic information. Backend integration to be done."
+        subtitle="Manage your personal and academic university record."
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -43,7 +54,7 @@ const Profile = () => {
 
             <div>
               <p className="text-lg font-bold text-slate-900">{profile.name}</p>
-              <p className="text-sm text-slate-500">{profile.regNo}</p>
+              <p className="text-sm text-slate-500">{profile.rollNo}</p>
               <p className="text-xs font-bold text-indigo-600 mt-1">
                 {profile.role}
               </p>
