@@ -60,10 +60,11 @@ const AppRoutes = () => {
                 <Route path="exams" element={<Exams />} />
 
                 {user?.role === 'teacher' && (
-                    <><Route path="teacher/assignments/new" element={<TeacherAssignmentCreate />} />
-                    <Route path="teacher/classlist" element={<ClassList />} /></>
-                    <Route path="teacher/allotcourse" element={<CourseAllocation />} /></>
-
+                  <>
+    <Route path="teacher/assignments/new" element={<TeacherAssignmentCreate />} />
+    <Route path="teacher/classlist" element={<ClassList />} />
+    <Route path="teacher/allotcourse" element={<CourseAllocation />} />
+                  </>
                 )}
 
                 {/* Catch-all */}
