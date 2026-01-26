@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PageHeader from '../components/layout/PageHeader';
 import { initialAssignmentsList } from './Assignments';
 import { useEvents } from '../hooks/useEvents';
+import { useAuth } from '../context/AuthContext';
 import { Calendar, Clock, ArrowRight, BookOpen, Bell } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -10,6 +11,7 @@ import campus2 from '../assets/images/campus2.png';
 import campus3 from '../assets/images/campus3.png';
 
 const Home = () => {
+    const { user } = useAuth();
     const { events, loading: eventsLoading } = useEvents();
     const [currentSlide, setCurrentSlide] = useState(0);
     const slides = [
@@ -41,7 +43,7 @@ const Home = () => {
     return (
         <div className="py-8 space-y-12">
             <PageHeader
-                title="Welcome Back, Vimoh"
+                title={`Welcome Back, ${user?.name?.split(' ')[0] || 'Student'}`}
                 subtitle="Here's what is happening on campus today."
             />
 
