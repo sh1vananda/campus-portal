@@ -87,7 +87,7 @@ const Support = () => {
       />
 
       <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
-        
+
         {/* Issue Type */}
         <label className="block text-sm font-semibold text-slate-700 mb-1">
           Issue Type
@@ -125,10 +125,9 @@ const Support = () => {
             onClick={handleSubmit}
             disabled={loading}
             className={`px-6 py-2.5 rounded-lg text-sm font-semibold text-white transition
-              ${
-                loading
-                  ? "bg-indigo-400 cursor-not-allowed"
-                  : "bg-indigo-600 hover:bg-indigo-700"
+              ${loading
+                ? "bg-indigo-400 cursor-not-allowed"
+                : "bg-indigo-600 hover:bg-indigo-700"
               }`}
           >
             {loading ? "Submitting..." : "Raise Ticket"}

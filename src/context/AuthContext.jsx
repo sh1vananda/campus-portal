@@ -3,13 +3,15 @@ import { createContext, useContext, useState, useEffect } from 'react';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState({
-        id: '69743ac87b5e9ca2726cbaa3',
-        rollNo: '22BCE1234', // Added mock roll number
-        name: 'Vimoh Sharma',
-        role: 'student',
-        email: 'vimoh.sharma@university.edu'
+    const [user, setUser] = useState(() => {
+        const savedUser = localStorage.getItem('portal_user');
+        return savedUser ? JSON.parse(savedUser) : null;
     });
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        setLoading(false);
+    }, []);
 
     const login = async (email, password) => {
         try {
@@ -27,11 +29,13 @@ export const AuthProvider = ({ children }) => {
             }
 
             const userData = {
-                id: data.userId,
-                rollNo: data.rollNo, // Capturing roll number from login
-                role: data.role,
-                name: data.name || 'Student',
-                email: email
+                id: data.user?._id || data.userId,
+                rollNo: data.user?.rollNo || '',
+                role: data.user?.role || data.role || 'student',
+                name: data.user?.name || 'Student',
+                email: data.user?.email || email,
+                department: data.user?.department || '',
+                currentYear: data.user?.currentYear || ''
             };
 
             setUser(userData);
@@ -62,7 +66,6 @@ export const AuthProvider = ({ children }) => {
 
             if (!response.ok) {
                 const errorData = isJson ? await response.json() : null;
-                const errorText = !isJson ? await response.text() : '';
                 throw new Error(errorData?.message || `Registration failed: ${response.status}`);
             }
 

@@ -1,63 +1,49 @@
 import React, { useMemo, useState } from "react";
 import PageHeader from "../components/layout/PageHeader";
+import { useCourseList } from "../hooks/useCourseList";
+import { useAuth } from "../context/AuthContext";
+import { Loader2 } from "lucide-react";
 
+/**
+ * CourseRegistration Component
+ * Merges backend course enrollment data with the standard registration interface.
+ */
 const CourseRegistration = () => {
-    // can Toggle this later based on backend response
+    const { user } = useAuth();
+    const { courses: backendCourses, loading: coursesLoading, error: coursesError } = useCourseList();
     const [isRegistrationOpen] = useState(false);
 
-    // Mock Data 
+    // Initial state with mock data
     const [availableCourses, setAvailableCourses] = useState([
-        {
-            id: "c1",
-            code: "CSE301",
-            title: "Database Systems",
-            faculty: "Dr. Mehta",
-            credits: 4,
-            slot: "A1",
-            category: "Core",
-        },
-        {
-            id: "c2",
-            code: "CSE302",
-            title: "Computer Networks",
-            faculty: "Dr. Rao",
-            credits: 3,
-            slot: "B1",
-            category: "Core",
-        },
-        {
-            id: "c3",
-            code: "CSE304",
-            title: "Machine Learning",
-            faculty: "Dr. Gupta",
-            credits: 3,
-            slot: "D1",
-            category: "Elective",
-        },
-        {
-            id: "c4",
-            code: "CSE305",
-            title: "Software Engineering",
-            faculty: "Dr. Sharma",
-            credits: 3,
-            slot: "E1",
-            category: "Core",
-        },
+        { id: "c1", code: "CSE301", title: "Database Systems", faculty: "Dr. Mehta", credits: 4, slot: "A1", category: "Core" },
+        { id: "c2", code: "CSE302", title: "Computer Networks", faculty: "Dr. Rao", credits: 3, slot: "B1", category: "Core" },
+        { id: "c3", code: "CSE304", title: "Machine Learning", faculty: "Dr. Gupta", credits: 3, slot: "D1", category: "Elective" },
+        { id: "c4", code: "CSE305", title: "Software Engineering", faculty: "Dr. Sharma", credits: 3, slot: "E1", category: "Core" },
     ]);
 
-    const [registeredCourses, setRegisteredCourses] = useState([
-        {
-            id: "r1",
-            code: "CSE201",
-            title: "Data Structures",
-            faculty: "Dr. Jain",
-            credits: 4,
-            slot: "F1",
-            category: "Core",
-        },
-    ]);
-
+    const [registeredCourses, setRegisteredCourses] = useState([]);
     const [query, setQuery] = useState("");
+
+    // Sync backend courses with local state
+    React.useEffect(() => {
+        if (backendCourses && backendCourses.length > 0) {
+            const mapped = backendCourses.map(c => ({
+                id: c._id || Math.random().toString(),
+                code: c.courseCode,
+                title: c.courseName,
+                faculty: "Registered Faculty",
+                credits: c.credits,
+                slot: "N/A",
+                category: c.department || "Core"
+            }));
+
+            setRegisteredCourses(prev => {
+                const combined = [...mapped, ...prev];
+                const unique = Array.from(new Map(combined.map(item => [item.code, item])).values());
+                return unique;
+            });
+        }
+    }, [backendCourses]);
 
     const filteredAvailable = useMemo(() => {
         const q = query.trim().toLowerCase();
@@ -76,14 +62,12 @@ const CourseRegistration = () => {
 
     const handleRegister = (course) => {
         if (!isRegistrationOpen) return;
-
         setAvailableCourses((prev) => prev.filter((c) => c.id !== course.id));
         setRegisteredCourses((prev) => [course, ...prev]);
     };
 
     const handleDrop = (course) => {
         if (!isRegistrationOpen) return;
-
         setRegisteredCourses((prev) => prev.filter((c) => c.id !== course.id));
         setAvailableCourses((prev) => [...prev, course]);
     };
@@ -92,7 +76,7 @@ const CourseRegistration = () => {
         <div className="py-8">
             <PageHeader
                 title="Course Registration"
-                subtitle="Search and register courses. This module will be connected to backend in the next phase."
+                subtitle="Search and register courses for the current academic semester."
                 right={
                     <div className="w-full md:w-[340px]">
                         <input
@@ -105,63 +89,44 @@ const CourseRegistration = () => {
                 }
             />
 
-            {/*Registration Status Banner */}
-            {!isRegistrationOpen ? (
-                <div className="mb-6 bg-white border border-slate-100 rounded-3xl p-6 shadow-sm shadow-slate-200/50">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-                        Registration Status
-                    </p>
-
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                        <div>
-                            <p className="text-lg font-bold text-slate-900">
-                                Course Registration is not available for you right now.
-                            </p>
-                            <p className="text-sm text-slate-500 mt-1">
-                                Please contact your Academic Office / Admin to check the
-                                registration window or eligibility.
-                            </p>
-                        </div>
-
-                        <div className="flex gap-3">
-                            <button className="px-5 py-2.5 bg-indigo-600 text-white text-xs font-bold rounded-xl hover:bg-indigo-700 transition-all">
-                                Contact Admin
-                            </button>
-                            <button className="px-5 py-2.5 bg-slate-50 text-slate-600 text-xs font-bold rounded-xl hover:bg-slate-100 transition-all">
-                                View Guidelines
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            ) : (
-                <div className="mb-6 bg-white border border-slate-100 rounded-3xl p-6 shadow-sm shadow-slate-200/50">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-                        Registration Status
-                    </p>
-                    <p className="text-lg font-bold text-slate-900">
-                        Course Registration is Open ✅
-                    </p>
-                    <p className="text-sm text-slate-500 mt-1">
-                        You can register and drop courses during the active registration
-                        window.
-                    </p>
+            {/* Error UI if sync fails */}
+            {coursesError && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center justify-between">
+                    <p className="text-xs text-red-600 font-bold uppercase tracking-tight">University Sync Error: {coursesError}</p>
+                    <button onClick={() => window.location.reload()} className="text-[10px] font-black text-red-700 underline uppercase tracking-widest">Retry</button>
                 </div>
             )}
 
-            {/* Content */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Registration Status Banner */}
+            <div className="mb-8 bg-white border border-slate-100 rounded-3xl p-6 shadow-sm shadow-slate-200/50">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Registration Status</p>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div>
+                        <p className="text-lg font-bold text-slate-900">
+                            {isRegistrationOpen ? "Course Registration is Open" : "Course Registration is Closed"}
+                        </p>
+                        <p className="text-sm text-slate-500 mt-1">
+                            {isRegistrationOpen
+                                ? "You can register and drop courses during the active window."
+                                : "The registration window has concluded. Please contact the Academic Office for changes."}
+                        </p>
+                    </div>
+                    {!isRegistrationOpen && (
+                        <div className="flex gap-3">
+                            <button className="px-5 py-2.5 bg-slate-900 text-white text-xs font-bold rounded-xl hover:bg-slate-800 transition-all">Contact Admin</button>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Available Courses */}
                 <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm shadow-slate-200/50">
-                    <div className="flex items-start justify-between gap-4 mb-4">
+                    <div className="flex items-start justify-between gap-4 mb-6">
                         <div>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                Available Courses
-                            </p>
-                            <p className="text-sm text-slate-500 mt-1">
-                                Select a course to register.
-                            </p>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Available Courses</p>
+                            <p className="text-sm text-slate-500 mt-1">Select a course to register.</p>
                         </div>
-
                         <Badge text={`${filteredAvailable.length} available`} />
                     </div>
 
@@ -176,17 +141,17 @@ const CourseRegistration = () => {
                 </div>
 
                 {/* Registered Courses */}
-                <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm shadow-slate-200/50">
-                    <div className="flex items-start justify-between gap-4 mb-4">
-                        <div>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                Registered Courses
-                            </p>
-                            <p className="text-sm text-slate-500 mt-1">
-                                Courses already registered by you.
-                            </p>
+                <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm shadow-slate-200/50 relative overflow-hidden">
+                    {coursesLoading && (
+                        <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-10 flex items-center justify-center">
+                            <Loader2 className="animate-spin text-indigo-600" size={24} />
                         </div>
-
+                    )}
+                    <div className="flex items-start justify-between gap-4 mb-6">
+                        <div>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Registered Courses</p>
+                            <p className="text-sm text-slate-500 mt-1">Synced with University Registry.</p>
+                        </div>
                         <Badge
                             text={`${registeredCourses.length} registered`}
                             type="success"
@@ -204,12 +169,9 @@ const CourseRegistration = () => {
                 </div>
             </div>
 
-            {/* Footer Note */}
-            <div className="mt-6 bg-white border border-slate-100 rounded-3xl p-6 shadow-sm shadow-slate-200/50">
-                <p className="text-xs text-slate-500">
-                    <span className="font-bold text-slate-900">Note:</span> Buttons are
-                    currently UI-based. Backend integration will enable real register/drop
-                    updates in MongoDB.
+            <div className="mt-8 bg-slate-50 border border-slate-100 rounded-3xl p-6">
+                <p className="text-xs text-slate-500 leading-relaxed">
+                    <span className="font-bold text-slate-900">University Registry Sync:</span> This list includes courses automatically assigned based on your program and those you've manually selected. Manual changes are only allowed during the active registration window.
                 </p>
             </div>
         </div>
@@ -217,10 +179,9 @@ const CourseRegistration = () => {
 };
 
 function Badge({ text, type = "default" }) {
-    const styles =
-        type === "success"
-            ? "bg-indigo-50 text-indigo-700 border-indigo-100"
-            : "bg-slate-50 text-slate-700 border-slate-100";
+    const styles = type === "success"
+        ? "bg-indigo-50 text-indigo-700 border-indigo-100"
+        : "bg-slate-50 text-slate-700 border-slate-100";
 
     return (
         <span className={`px-3 py-1 rounded-xl text-xs font-bold border ${styles}`}>
@@ -229,73 +190,50 @@ function Badge({ text, type = "default" }) {
     );
 }
 
-function CourseTable({
-    rows,
-    emptyText,
-    actionLabel,
-    actionStyle,
-    disabled,
-    onAction,
-}) {
+function CourseTable({ rows, emptyText, actionLabel, actionStyle, disabled, onAction }) {
     return (
         <div className="overflow-x-auto">
             <table className="w-full text-left">
                 <thead>
                     <tr className="border-b border-slate-100">
-                        <th className="py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                            Code
-                        </th>
-                        <th className="py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                            Course
-                        </th>
-                        <th className="py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                            Credits
-                        </th>
-                        <th className="py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                            Slot
-                        </th>
-                        <th className="py-4 text-right text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                            Action
-                        </th>
+                        <th className="py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap">Code</th>
+                        <th className="py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Course</th>
+                        <th className="py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Credits</th>
+                        <th className="py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Slot</th>
+                        <th className="py-4 text-right text-[10px] font-bold text-slate-400 uppercase tracking-widest">Action</th>
                     </tr>
                 </thead>
 
                 <tbody className="divide-y divide-slate-50 text-sm">
                     {rows.length === 0 ? (
                         <tr>
-                            <td colSpan={5} className="py-6 text-center text-slate-500">
+                            <td colSpan={5} className="py-12 text-center text-slate-400 italic">
                                 {emptyText}
                             </td>
                         </tr>
                     ) : (
                         rows.map((c) => (
-                            <tr key={c.id}>
-                                <td className="py-4 font-bold text-slate-900">{c.code}</td>
-
+                            <tr key={c.id} className="group/row">
+                                <td className="py-4 font-mono font-bold text-slate-900 text-xs">{c.code}</td>
                                 <td className="py-4">
-                                    <p className="font-bold text-slate-900">{c.title}</p>
-                                    <p className="text-xs text-slate-500">
-                                        {c.faculty} • {c.category}
-                                    </p>
+                                    <p className="font-bold text-slate-900 leading-tight">{c.title}</p>
+                                    <p className="text-[10px] text-slate-500 mt-1 uppercase font-medium">{c.faculty} • {c.category}</p>
                                 </td>
-
-                                <td className="py-4 text-slate-600">{c.credits}</td>
-
+                                <td className="py-4 text-slate-600 font-medium">{c.credits}</td>
                                 <td className="py-4">
-                                    <span className="px-3 py-1 rounded-xl text-xs font-bold bg-slate-50 border border-slate-100 text-slate-700">
+                                    <span className="px-2.5 py-1 rounded-lg text-[10px] font-black bg-slate-100 border border-slate-200 text-slate-600">
                                         {c.slot}
                                     </span>
                                 </td>
-
                                 <td className="py-4 text-right">
                                     <button
                                         onClick={() => onAction(c)}
                                         disabled={disabled}
-                                        className={`px-5 py-2.5 text-xs font-bold rounded-xl transition-all ${disabled
-                                                ? "bg-slate-50 text-slate-400 cursor-not-allowed"
-                                                : actionStyle === "danger"
-                                                    ? "bg-slate-50 text-red-600 hover:bg-slate-100"
-                                                    : "bg-indigo-600 text-white hover:bg-indigo-700"
+                                        className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${disabled
+                                            ? "bg-slate-50 text-slate-300 cursor-not-allowed opacity-50"
+                                            : actionStyle === "danger"
+                                                ? "bg-red-50 text-red-600 hover:bg-red-100"
+                                                : "bg-indigo-600 text-white hover:shadow-lg hover:shadow-indigo-200"
                                             }`}
                                     >
                                         {actionLabel}

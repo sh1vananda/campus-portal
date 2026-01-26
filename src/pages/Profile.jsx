@@ -8,17 +8,21 @@ const Profile = () => {
   const { profile: backendProfile, loading, error } = useProfile();
 
   const profile = {
-    name: backendProfile?.name || user?.name || "Vimoh Sharma",
-    rollNo: backendProfile?.rollNo || user?.rollNo || "22BCE0000",
+    name: backendProfile?.name || user?.name || "",
+    rollNo: backendProfile?.rollNo || user?.rollNo || "",
     role: backendProfile?.role || user?.role || "Student",
     program: backendProfile?.program || "B.Tech",
-    branch: backendProfile?.department || "Computer Science Engineering",
-    year: backendProfile?.currentYear ? `${backendProfile.currentYear} Year` : "3rd Year",
-    email: backendProfile?.email || user?.email || "vimohsharma@gmail.com",
-    phone: backendProfile?.phone || "+91 96674 31417",
-    dob: backendProfile?.dob || "12 July 2003",
-    mentor: backendProfile?.mentor || "Dr. A. Sharma",
-    address: backendProfile?.address || "Noida, India",
+    branch: backendProfile?.department || user?.department || "",
+    year: backendProfile?.currentYear
+      ? `${backendProfile.currentYear} Year`
+      : user?.currentYear
+        ? `${user.currentYear} Year`
+        : "",
+    email: backendProfile?.email || user?.email || "",
+    phone: backendProfile?.phone || "",
+    dob: backendProfile?.dob || "",
+    mentor: backendProfile?.mentor || "",
+    address: backendProfile?.address || "",
   };
 
   const initials = profile.name
@@ -96,7 +100,7 @@ const Profile = () => {
           {/* Footer strip */}
           <div className="mt-6 border border-slate-100 rounded-2xl p-4 bg-slate-50/60">
             <p className="text-xs text-slate-500">
-              <span className="font-bold text-slate-900">Note:</span> Can add something here.
+              Your profile information is securely linked to the University Academic Registry.
             </p>
           </div>
         </div>
