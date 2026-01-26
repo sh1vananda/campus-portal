@@ -86,6 +86,7 @@ const CourseAllocation = () => {
             name="courseCode"
             value={form.courseCode}
             onChange={handleChange}
+            placeholder="Enter course code (EX: CSE103)"
             className="w-full border p-2 rounded"
           />
         </div>
@@ -97,6 +98,7 @@ const CourseAllocation = () => {
             name="rollNo"
             value={form.rollNo}
             onChange={handleChange}
+            placeholder="Enter roll no (22Y001)"
             className="w-full border p-2 rounded"
           />
         </div>
@@ -104,9 +106,27 @@ const CourseAllocation = () => {
         {error && <p className="text-red-600 text-sm mb-2">{error}</p>}
         {success && <p className="text-green-600 text-sm mb-2">{success}</p>}
 
+        {/* ONLY THIS BUTTON IS MODIFIED */}
         <button
           onClick={handleSubmit}
-          className="w-full bg-indigo-600 text-white py-2 rounded"
+          className="
+            w-full
+            bg-slate-900
+            text-white
+            py-3
+            rounded-xl
+            font-semibold
+            tracking-wide
+            transition-all
+            duration-300
+            hover:bg-slate-800
+            hover:shadow-lg
+            active:scale-[0.98]
+            focus:outline-none
+            focus:ring-2
+            focus:ring-slate-900
+            focus:ring-offset-2
+          "
         >
           Submit Allocation
         </button>
