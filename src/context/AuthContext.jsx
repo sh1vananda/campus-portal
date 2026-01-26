@@ -5,6 +5,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState({
         id: '69743ac87b5e9ca2726cbaa3',
+        rollNo: '22BCE1234', // Added mock roll number
         name: 'Vimoh Sharma',
         role: 'student',
         email: 'vimoh.sharma@university.edu'
@@ -27,6 +28,7 @@ export const AuthProvider = ({ children }) => {
 
             const userData = {
                 id: data.userId,
+                rollNo: data.rollNo, // Capturing roll number from login
                 role: data.role,
                 name: data.name || 'Student',
                 email: email
