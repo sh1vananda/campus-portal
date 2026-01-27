@@ -13,8 +13,9 @@ import campus3 from '../assets/images/campus3.png';
 const Home = () => {
     const { user } = useAuth();
     const { events, loading: eventsLoading } = useEvents();
-    const { assignments } = useAssignments();
+    const { assignments, loading: assignmentsLoading } = useAssignments();
     const [currentSlide, setCurrentSlide] = useState(0);
+
     const slides = [
         {
             image: campus1,
@@ -41,6 +42,13 @@ const Home = () => {
         return () => clearInterval(timer);
     }, [slides.length]);
 
+    const formatDate = (date) => {
+        if (!date) return 'No due date';
+        const parsed = new Date(date);
+        if (Number.isNaN(parsed.getTime())) return date;
+        return parsed.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    };
+
     const normalizeAssignment = (assignment) => {
         const submissions = assignment?.submissions || [];
         const status = submissions.length > 0 ? 'submitted' : 'pending';
@@ -48,7 +56,7 @@ const Home = () => {
             id: assignment?._id || assignment?.id,
             title: assignment?.title || 'Untitled Assignment',
             course: assignment?.course?.courseName || assignment?.courseName || assignment?.course || 'Course',
-            dueDate: assignment?.dueDate || assignment?.deadline || '',
+            dueDate: formatDate(assignment?.dueDate || assignment?.deadline),
             status,
             weight: assignment?.weight || 10,
         };
@@ -117,6 +125,7 @@ const Home = () => {
                     subtitle="Upcoming assignments"
                     link="/assignments"
                     items={upcomingAssignments}
+                    isLoading={assignmentsLoading}
                     renderItem={(assignment) => (
                         <div key={assignment.id} className="group flex gap-5 p-5 rounded-[24px] border border-transparent hover:border-slate-100 hover:bg-slate-50/50 transition-all cursor-pointer h-[110px]">
                             <div className="w-12 h-12 bg-indigo-50 rounded-xl flex-shrink-0 flex items-center justify-center text-indigo-600 group-hover:scale-110 transition-transform">
@@ -173,7 +182,7 @@ const Home = () => {
 };
 
 // Internal Helper for Homepage symmetry
-const HomeListSection = ({ title, subtitle, link, items, renderItem }) => (
+const HomeListSection = ({ title, subtitle, link, items, renderItem, isLoading }) => (
     <div className="bg-white border border-slate-100 rounded-[40px] p-8 md:p-10 shadow-sm shadow-slate-200/50 flex flex-col h-full min-h-[520px]">
         <div className="flex justify-between items-center mb-8">
             <div>
@@ -186,7 +195,18 @@ const HomeListSection = ({ title, subtitle, link, items, renderItem }) => (
         </div>
 
         <div className="space-y-4 flex-1">
-            {items.map(renderItem)}
+            {isLoading ? (
+                <div className="h-48 flex flex-col items-center justify-center text-slate-400 gap-3">
+                    <div className="w-8 h-8 border-2 border-indigo-600/30 border-t-indigo-600 rounded-full animate-spin"></div>
+                    <p className="text-[10px] font-black uppercase tracking-widest">Loading...</p>
+                </div>
+            ) : items.length > 0 ? (
+                items.map(renderItem)
+            ) : (
+                <div className="h-48 flex flex-col items-center justify-center text-slate-400 gap-2 opacity-60">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-center">All caught up!</p>
+                </div>
+            )}
         </div>
 
         <Link to={link} className="mt-8 py-4 border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-center text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-all">
