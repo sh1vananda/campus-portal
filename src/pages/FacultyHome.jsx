@@ -1,4 +1,5 @@
 import PageHeader from '../components/layout/PageHeader';
+import HeroCarousel from '../components/common/HeroCarousel';
 
 const FacultyHome = () => {
     return (
@@ -7,6 +8,8 @@ const FacultyHome = () => {
                 title="Faculty Overview"
                 subtitle="Manage your classes, students, and research publications."
             />
+
+            <HeroCarousel />
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {[
@@ -21,11 +24,6 @@ const FacultyHome = () => {
                 ))}
             </div>
 
-            <div className="flex flex-col items-center justify-center py-24 border-2 border-dashed border-slate-100 rounded-3xl bg-slate-50/50">
-                <p className="text-slate-400 font-medium tracking-wide italic">
-                    Faculty portal modules under development...
-                </p>
-            </div>
         </div>
     );
 };
