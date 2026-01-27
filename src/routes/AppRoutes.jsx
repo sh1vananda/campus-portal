@@ -16,6 +16,10 @@ import SignupTeacher from '../pages/SignupTeacher';
 import CourseRegistration from '../pages/CourseRegistration';
 import Profile from '../pages/Profile';
 import Exams from '../pages/Exams';
+import Privacy from '../pages/Privacy';
+import Terms from '../pages/Terms';
+import Help from '../pages/Help';
+import Contact from '../pages/Contact';
 import TeacherAssignmentCreate from '../pages/teacher/AssignmentCreate';
 import { useAuth } from '../context/AuthContext';
 import ClassList from '../pages/teacher/classList';
@@ -58,13 +62,17 @@ const AppRoutes = () => {
                 <Route path="registration" element={<CourseRegistration />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="exams" element={<Exams />} />
+                <Route path="privacy" element={<Privacy />} />
+                <Route path="terms" element={<Terms />} />
+                <Route path="help" element={<Help />} />
+                <Route path="contact" element={<Contact />} />
 
                 {user?.role === 'teacher' && (
-                  <>
-    <Route path="teacher/assignments/new" element={<TeacherAssignmentCreate />} />
-    <Route path="teacher/classlist" element={<ClassList />} />
-    <Route path="teacher/allotcourse" element={<CourseAllocation />} />
-                  </>
+                    <>
+                        <Route path="teacher/assignments/new" element={<TeacherAssignmentCreate />} />
+                        <Route path="teacher/classlist" element={<ClassList />} />
+                        <Route path="teacher/allotcourse" element={<CourseAllocation />} />
+                    </>
                 )}
 
                 {/* Catch-all */}

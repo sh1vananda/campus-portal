@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import PageHeader from "../components/layout/PageHeader";
+import { useAuth } from "../context/AuthContext";
 
 const Support = () => {
+  const { user } = useAuth();
   const [ticket, setTicket] = useState({
     title: "",
     description: "",
@@ -9,8 +11,8 @@ const Support = () => {
 
   const [loading, setLoading] = useState(false);
 
-  // 🔹 get rollNo from localStorage
-  const rollNo = localStorage.getItem("rollNo");
+  // Get rollNo from context
+  const rollNo = user?.rollNo;
 
   const issueOptions = [
     "LMS not working",

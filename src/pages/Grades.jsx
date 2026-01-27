@@ -105,12 +105,6 @@ const Grades = () => {
           </table>
         </div>
 
-        {/* Note */}
-        <div className="mt-6 border border-slate-100 rounded-2xl p-4 bg-slate-50/60">
-          <p className="text-xs text-slate-500">
-            <span className="font-bold text-slate-900">Note:</span> CGPA Values added later. data from backend
-          </p>
-        </div>
       </div>
     </div>
   );
@@ -124,9 +118,8 @@ const StatCard = ({ label, value, helper, highlight }) => {
       </p>
 
       <p
-        className={`text-2xl font-bold ${
-          highlight ? "text-indigo-600" : "text-slate-900"
-        }`}
+        className={`text-2xl font-bold ${highlight ? "text-indigo-600" : "text-slate-900"
+          }`}
       >
         {value}
       </p>
@@ -141,11 +134,10 @@ const StatusPill = ({ status }) => {
 
   return (
     <span
-      className={`px-3 py-1 rounded-xl text-xs font-bold border ${
-        isCompleted
-          ? "bg-indigo-50 text-indigo-700 border-indigo-100"
-          : "bg-slate-50 text-slate-700 border-slate-100"
-      }`}
+      className={`px-3 py-1 rounded-xl text-xs font-bold border ${isCompleted
+        ? "bg-indigo-50 text-indigo-700 border-indigo-100"
+        : "bg-slate-50 text-slate-700 border-slate-100"
+        }`}
     >
       {status}
     </span>

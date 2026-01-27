@@ -25,8 +25,8 @@ const Footer = () => {
             links: [
                 { name: 'Profile', path: '/profile' },
                 { name: 'About', path: '#' },
-                { name: 'Contact', path: '#' },
-                { name: 'Privacy', path: '#' }
+                { name: 'Contact', path: '/contact' },
+                { name: 'Help Center', path: '/help' }
             ]
         }
     ];
@@ -65,9 +65,9 @@ const Footer = () => {
                     </div>
                     <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-[10px] font-medium text-slate-500 uppercase tracking-widest">
                         <p>© {new Date().getFullYear()} University</p>
-                        <a href="#" className="hover:text-white transition-colors">Privacy</a>
-                        <a href="#" className="hover:text-white transition-colors">Terms</a>
-                        <a href="#" className="hover:text-white transition-colors">Help</a>
+                        <Link to="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+                        <Link to="/terms" className="hover:text-white transition-colors">Terms</Link>
+                        <Link to="/help" className="hover:text-white transition-colors">Help</Link>
                     </div>
                 </div>
             </div>
