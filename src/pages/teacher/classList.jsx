@@ -4,11 +4,11 @@ import { useTeacherCourses } from "../../hooks/useTeacherCourses";
 import { useStudents } from "../../hooks/useStudents";
 
 const ClassList = () => {
-  // ✅ Fetch all courses from backend
+  
   const { courses, loading: coursesLoading, error: coursesError } =
     useTeacherCourses();
 
-  // ✅ Fetch all students from backend (for mapping MongoID -> rollNo + name)
+  
   const {
     studentMap,
     loading: studentsLoading,
@@ -18,10 +18,10 @@ const ClassList = () => {
   const [selectedCourseId, setSelectedCourseId] = useState("");
   const [search, setSearch] = useState("");
 
-  // ✅ Attendance state: { studentId: "Present" | "Absent" }
+  //state: { studentId: "Present" | "Absent" }
   const [attendance, setAttendance] = useState({});
 
-  // ✅ Select first course automatically after courses load
+  //Select first course automatically
   useEffect(() => {
     if (!selectedCourseId && courses?.length > 0) {
       setSelectedCourseId(courses[0]._id);
@@ -33,10 +33,10 @@ const ClassList = () => {
     return courses.find((c) => c._id === selectedCourseId) || courses[0];
   }, [courses, selectedCourseId]);
 
-  // ✅ Enrolled student IDs from selected course
+  //Enrolled student IDs
   const studentIds = selectedCourse?.students || [];
 
-  // ✅ Filter students by search text (roll no / name / id)
+  //Filter students by search text (roll no / name / id)
   const filteredStudentIds = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return studentIds;
@@ -51,7 +51,7 @@ const ClassList = () => {
     });
   }, [studentIds, search, studentMap]);
 
-  // ✅ Set attendance status
+  //Setting status
   const setStatus = (studentId, status) => {
     setAttendance((prev) => ({ ...prev, [studentId]: status }));
   };
@@ -64,7 +64,7 @@ const ClassList = () => {
     (v) => v === "Absent"
   ).length;
 
-  // ✅ Save button (UI only for now)
+  //Save button (UI only for now)
   const handleSave = () => {
     const payload = {
       courseId: selectedCourse?._id,
@@ -79,7 +79,7 @@ const ClassList = () => {
     );
   };
 
-  // ✅ Loading state
+  //Loading state
   if (coursesLoading) {
     return (
       <div className="py-8 flex justify-center items-center min-h-[400px]">
@@ -88,7 +88,7 @@ const ClassList = () => {
     );
   }
 
-  // ✅ Error state
+  //Error state
   if (coursesError) {
     return (
       <div className="py-8">
@@ -104,7 +104,7 @@ const ClassList = () => {
     <div className="py-8">
       <PageHeader
         title="Class List"
-        subtitle="Select a course and mark attendance (backend-powered)."
+        subtitle="Select a course and see the students in the class."
         right={
           <button
             onClick={handleSave}
@@ -166,10 +166,10 @@ const ClassList = () => {
           )}
         </div>
 
-        {/* Attendance Summary */}
+        {/* Summary */}
         <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm shadow-slate-200/50">
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-            Attendance Summary
+            Class List Summary
           </p>
 
           <div className="grid grid-cols-2 gap-4">
@@ -272,14 +272,6 @@ const ClassList = () => {
               )}
             </tbody>
           </table>
-        </div>
-
-        <div className="mt-6 border border-slate-100 rounded-2xl p-4 bg-slate-50/60">
-          <p className="text-xs text-slate-500">
-            <span className="font-bold text-slate-900">Note:</span> Roll No +
-            Name are loaded from <span className="font-bold">/api/students</span>{" "}
-            and mapped using student Mongo IDs from courses.
-          </p>
         </div>
       </div>
     </div>
