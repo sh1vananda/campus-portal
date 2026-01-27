@@ -1,16 +1,33 @@
+import { Link } from 'react-router-dom';
+
 const Footer = () => {
     const footerLinks = [
         {
             title: 'Academic',
-            links: ['Programs', 'Courses', 'Calendar', 'Exams']
+            links: [
+                { name: 'Courses', path: '/registration' },
+                { name: 'Calendar', path: '/calendar' },
+                { name: 'Exams', path: '/exams' },
+                { name: 'Assignments', path: '/assignments' }
+            ]
         },
         {
             title: 'Services',
-            links: ['Finance', 'Library', 'IT Support', 'Housing']
+            links: [
+                { name: 'Finance', path: '/fees' },
+                { name: 'IT Support', path: '/support' },
+                { name: 'Attendance', path: '/attendance' },
+                { name: 'Grades', path: '/grades' }
+            ]
         },
         {
             title: 'University',
-            links: ['About', 'Contact', 'News', 'Privacy']
+            links: [
+                { name: 'Profile', path: '/profile' },
+                { name: 'About', path: '#' },
+                { name: 'Contact', path: '#' },
+                { name: 'Privacy', path: '#' }
+            ]
         }
     ];
 
@@ -26,10 +43,13 @@ const Footer = () => {
                             </h3>
                             <ul className="space-y-3">
                                 {section.links.map((link) => (
-                                    <li key={link}>
-                                        <a href="#" className="text-xs text-slate-400 hover:text-white transition-colors">
-                                            {link}
-                                        </a>
+                                    <li key={link.name}>
+                                        <Link
+                                            to={link.path}
+                                            className="text-xs text-slate-400 hover:text-white transition-colors"
+                                        >
+                                            {link.name}
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>
