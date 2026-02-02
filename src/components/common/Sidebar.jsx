@@ -22,8 +22,6 @@ import { useAuth } from '../../context/AuthContext';
 const sidebarItems = [
     { name: 'Home', icon: HomeIcon, path: '/', roles: ['student', 'teacher', 'admin'] },
     { name: 'Profile', icon: User, path: '/profile', roles: ['student', 'teacher'] },
-    { name: 'Admin Console', icon: ShieldCheck, path: '/admin', roles: [] },
-    { name: 'Settings', icon: Settings, path: '/admin/settings', roles: [] },
     { name: 'Attendance', icon: Activity, path: '/attendance', roles: ['student'] },
     { name: 'Timetable', icon: Clock, path: '/timetable', roles: ['student'] },
     { name: 'Exams', icon: ClipboardList, path: '/exams', roles: ['student'] },
