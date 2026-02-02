@@ -2,11 +2,16 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageHeader from '../components/layout/PageHeader';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const Calendar = () => {
     const navigate = useNavigate();
-    const [currentDate, setCurrentDate] = useState(new Date(2026, 0, 22)); // Jan 22, 2026
+    const { user } = useAuth();
+    const [currentDate, setCurrentDate] = useState(new Date(2026, 1, 2)); // Feb 2, 2026 (month is 0-indexed)
     const [selectedDateDetail, setSelectedDateDetail] = useState(null);
+    
+    const isTeacher = user?.role === 'teacher';
+    const isStudent = user?.role === 'student';
 
     // Later: replace with API data
     // Assignment due dates
@@ -19,40 +24,62 @@ const Calendar = () => {
         '2026-04-12': { title: 'Machine Learning: Regression Model', id: 6 },
     };
 
-    // Later: replace with API response
-    // Academic events for the year
+    // Common academic events for all roles
+    const commonEvents = {
+        '2026-01-25': { title: 'Spring Semester Starts', type: 'important', color: 'blue', roles: ['student', 'teacher'] },
+        '2026-01-26': { title: 'Republic Day', type: 'festival', color: 'purple', roles: ['student', 'teacher'] },
+        '2026-02-14': { title: 'Mid-term Exams Begin', type: 'exam', color: 'red', roles: ['student', 'teacher'] },
+        '2026-02-28': { title: 'Mid-term Exams End', type: 'exam', color: 'red', roles: ['student', 'teacher'] },
+        '2026-03-29': { title: 'Holi - Festival of Colors', type: 'festival', color: 'purple', roles: ['student', 'teacher'] },
+        '2026-05-01': { title: 'Final Exams Begin', type: 'exam', color: 'red', roles: ['student', 'teacher'] },
+        '2026-05-13': { title: 'Eid ul-Fitr', type: 'festival', color: 'purple', roles: ['student', 'teacher'] },
+        '2026-05-20': { title: 'Final Exams End', type: 'exam', color: 'red', roles: ['student', 'teacher'] },
+        '2026-06-01': { title: 'Summer Session Starts', type: 'important', color: 'blue', roles: ['student', 'teacher'] },
+        '2026-07-20': { title: 'Eid ul-Adha (Bakrid)', type: 'festival', color: 'purple', roles: ['student', 'teacher'] },
+        '2026-08-15': { title: 'Fall Semester Starts & Independence Day', type: 'important', color: 'blue', roles: ['student', 'teacher'] },
+        '2026-08-23': { title: 'Janmashtami - Lord Krishna Birth', type: 'festival', color: 'purple', roles: ['student', 'teacher'] },
+        '2026-09-05': { title: 'Labor Day (No Classes)', type: 'holiday', color: 'green', roles: ['student', 'teacher'] },
+        '2026-09-25': { title: 'Navratri Begins', type: 'festival', color: 'purple', roles: ['student', 'teacher'] },
+        '2026-10-02': { title: 'Gandhi Jayanti', type: 'festival', color: 'purple', roles: ['student', 'teacher'] },
+        '2026-10-03': { title: 'Dussehra - Victory of Good over Evil', type: 'festival', color: 'purple', roles: ['student', 'teacher'] },
+        '2026-10-29': { title: 'Diwali - Festival of Lights', type: 'festival', color: 'purple', roles: ['student', 'teacher'] },
+        '2026-10-31': { title: 'Halloween', type: 'festival', color: 'purple', roles: ['student', 'teacher'] },
+        '2026-11-01': { title: 'Fall Mid-term Exams', type: 'exam', color: 'red', roles: ['student', 'teacher'] },
+        '2026-11-30': { title: 'Guru Nanak Jayanti', type: 'festival', color: 'purple', roles: ['student', 'teacher'] },
+        '2026-12-10': { title: 'Final Exams Begin', type: 'exam', color: 'red', roles: ['student', 'teacher'] },
+        '2026-12-20': { title: 'Semester Ends', type: 'important', color: 'blue', roles: ['student', 'teacher'] },
+        '2026-12-25': { title: 'Christmas', type: 'festival', color: 'purple', roles: ['student', 'teacher'] },
+    };
+
+    // Student-specific events
+    const studentEvents = {
+        '2026-03-15': { title: 'Assignment Submission Deadline', type: 'deadline', color: 'orange', assignment: assignmentDueDates['2026-03-15'], roles: ['student'] },
+        '2026-03-20': { title: 'Web Dev Project Due', type: 'deadline', color: 'orange', assignment: assignmentDueDates['2026-03-20'], roles: ['student'] },
+        '2026-04-05': { title: 'OS Assignment Due', type: 'deadline', color: 'orange', assignment: assignmentDueDates['2026-04-05'], roles: ['student'] },
+        '2026-04-12': { title: 'ML Project Due', type: 'deadline', color: 'orange', assignment: assignmentDueDates['2026-04-12'], roles: ['student'] },
+        '2026-05-25': { title: 'Grades Released', type: 'important', color: 'blue', roles: ['student'] },
+        '2026-10-15': { title: 'Mid-semester Projects Due', type: 'deadline', color: 'orange', roles: ['student'] },
+        '2026-12-01': { title: 'Final Projects Due', type: 'deadline', color: 'orange', roles: ['student'] },
+    };
+
+    // Teacher-specific events
+    const teacherEvents = {
+        '2026-02-12': { title: 'Mid-term Exam Papers Due', type: 'deadline', color: 'orange', roles: ['teacher'] },
+        '2026-03-05': { title: 'Grade Submission Deadline (Mid-term)', type: 'deadline', color: 'orange', roles: ['teacher'] },
+        '2026-03-15': { title: 'Assignment Grading Due', type: 'deadline', color: 'orange', roles: ['teacher'] },
+        '2026-04-28': { title: 'Final Exam Papers Due', type: 'deadline', color: 'orange', roles: ['teacher'] },
+        '2026-05-25': { title: 'Final Grades Submission', type: 'deadline', color: 'orange', roles: ['teacher'] },
+        '2026-06-15': { title: 'Faculty Meeting', type: 'important', color: 'blue', roles: ['teacher'] },
+        '2026-10-15': { title: 'Project Evaluation Week', type: 'important', color: 'blue', roles: ['teacher'] },
+        '2026-11-15': { title: 'Grade Submission (Fall Mid-term)', type: 'deadline', color: 'orange', roles: ['teacher'] },
+        '2026-12-01': { title: 'Course Feedback Review', type: 'important', color: 'blue', roles: ['teacher'] },
+    };
+
+    // Merge events based on role
     const academicEvents = {
-        // Academic Events
-        '2026-01-25': { title: 'Spring Semester Starts', type: 'important', color: 'blue' },
-        '2026-01-26': { title: 'Republic Day', type: 'festival', color: 'purple' },
-        '2026-02-14': { title: 'Mid-term Exams Begin', type: 'exam', color: 'red' },
-        '2026-02-28': { title: 'Mid-term Exams End', type: 'exam', color: 'red' },
-        '2026-03-15': { title: 'Assignment Submission Deadline', type: 'deadline', color: 'orange', assignment: assignmentDueDates['2026-03-15'] },
-        '2026-03-20': { title: 'Web Dev Project Due', type: 'deadline', color: 'orange', assignment: assignmentDueDates['2026-03-20'] },
-        '2026-03-29': { title: 'Holi - Festival of Colors', type: 'festival', color: 'purple' },
-        '2026-04-05': { title: 'OS Assignment Due', type: 'deadline', color: 'orange', assignment: assignmentDueDates['2026-04-05'] },
-        '2026-04-12': { title: 'ML Project Due', type: 'deadline', color: 'orange', assignment: assignmentDueDates['2026-04-12'] },
-        '2026-05-01': { title: 'Final Exams Begin', type: 'exam', color: 'red' },
-        '2026-05-13': { title: 'Eid ul-Fitr', type: 'festival', color: 'purple' },
-        '2026-05-20': { title: 'Final Exams End', type: 'exam', color: 'red' },
-        '2026-05-25': { title: 'Grades Released', type: 'important', color: 'blue' },
-        '2026-06-01': { title: 'Summer Session Starts', type: 'important', color: 'blue' },
-        '2026-07-20': { title: 'Eid ul-Adha (Bakrid)', type: 'festival', color: 'purple' },
-        '2026-08-15': { title: 'Fall Semester Starts & Independence Day', type: 'important', color: 'blue' },
-        '2026-08-23': { title: 'Janmashtami - Lord Krishna Birth', type: 'festival', color: 'purple' },
-        '2026-09-05': { title: 'Labor Day (No Classes)', type: 'holiday', color: 'green' },
-        '2026-09-25': { title: 'Navratri Begins', type: 'festival', color: 'purple' },
-        '2026-10-02': { title: 'Gandhi Jayanti', type: 'festival', color: 'purple' },
-        '2026-10-03': { title: 'Dussehra - Victory of Good over Evil', type: 'festival', color: 'purple' },
-        '2026-10-15': { title: 'Mid-semester Projects Due', type: 'deadline', color: 'orange' },
-        '2026-10-29': { title: 'Diwali - Festival of Lights', type: 'festival', color: 'purple' },
-        '2026-10-31': { title: 'Halloween', type: 'festival', color: 'purple' },
-        '2026-11-01': { title: 'Fall Mid-term Exams', type: 'exam', color: 'red' },
-        '2026-11-30': { title: 'Guru Nanak Jayanti', type: 'festival', color: 'purple' },
-        '2026-12-01': { title: 'Final Projects Due', type: 'deadline', color: 'orange' },
-        '2026-12-10': { title: 'Final Exams Begin', type: 'exam', color: 'red' },
-        '2026-12-20': { title: 'Semester Ends', type: 'important', color: 'blue' },
-        '2026-12-25': { title: 'Christmas', type: 'festival', color: 'purple' },
+        ...commonEvents,
+        ...(isStudent ? studentEvents : {}),
+        ...(isTeacher ? teacherEvents : {})
     };
 
     const monthNames = [
@@ -83,7 +110,7 @@ const Calendar = () => {
     };
 
     const handleToday = () => {
-        setCurrentDate(new Date(2026, 0, 22));
+        setCurrentDate(new Date(2026, 1, 2)); // Feb 2, 2026
     };
 
     const daysInMonth = getDaysInMonth(currentDate);
@@ -164,8 +191,8 @@ const Calendar = () => {
                                         : null;
                                     const event = dateKey ? academicEvents[dateKey] : null;
                                     const isToday =
-                                        day === 22 &&
-                                        currentDate.getMonth() === 0 &&
+                                        day === 2 &&
+                                        currentDate.getMonth() === 1 &&
                                         currentDate.getFullYear() === 2026;
                                     const isCurrentMonth = day !== null;
 
@@ -281,12 +308,14 @@ const Calendar = () => {
                                     ))}
                             </div>
 
-                            <button 
-                                onClick={() => navigate('/assignments')}
-                                className='w-full mt-4 px-3 py-2 rounded bg-blue-500 text-white text-sm transition hover:bg-blue-600 font-medium'
-                            >
-                                📋 Assignments
-                            </button>
+                            {isStudent && (
+                                <button 
+                                    onClick={() => navigate('/assignments')}
+                                    className='w-full mt-4 px-3 py-2 rounded bg-blue-500 text-white text-sm transition hover:bg-blue-600 font-medium'
+                                >
+                                    📋 Assignments
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
