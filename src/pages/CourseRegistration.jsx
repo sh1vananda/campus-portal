@@ -92,7 +92,7 @@ const CourseRegistration = () => {
             {/* Error UI if sync fails */}
             {coursesError && (
                 <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center justify-between">
-                    <p className="text-xs text-red-600 font-bold uppercase tracking-tight">University Sync Error: {coursesError}</p>
+                    <p className="text-xs text-red-600 font-bold uppercase tracking-tight">Zeta Registry Sync Error: {coursesError}</p>
                     <button onClick={() => window.location.reload()} className="text-[10px] font-black text-red-700 underline uppercase tracking-widest">Retry</button>
                 </div>
             )}
@@ -150,7 +150,7 @@ const CourseRegistration = () => {
                     <div className="flex items-start justify-between gap-4 mb-6">
                         <div>
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Registered Courses</p>
-                            <p className="text-sm text-slate-500 mt-1">Synced with University Registry.</p>
+                            <p className="text-sm text-slate-500 mt-1">Synced with Zeta Registry.</p>
                         </div>
                         <Badge
                             text={`${registeredCourses.length} registered`}
@@ -171,7 +171,7 @@ const CourseRegistration = () => {
 
             <div className="mt-8 bg-slate-50 border border-slate-100 rounded-3xl p-6">
                 <p className="text-xs text-slate-500 leading-relaxed">
-                    <span className="font-bold text-slate-900">University Registry Sync:</span> This list includes courses automatically assigned based on your program and those you've manually selected. Manual changes are only allowed during the active registration window.
+                    <span className="font-bold text-slate-900">Zeta Registry Sync:</span> This list includes courses automatically assigned based on your program and those you've manually selected. Manual changes are only allowed during the active registration window.
                 </p>
             </div>
         </div>

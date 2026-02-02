@@ -68,7 +68,7 @@ const Help = () => {
         <div className="py-8">
             <PageHeader
                 title="Help Center"
-                subtitle="Your guide to navigating the University Campus Portal."
+                subtitle="Your guide to navigating the Zeta University Campus Portal."
             />
 
             <div className="max-w-4xl mx-auto space-y-12 px-4">

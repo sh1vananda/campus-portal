@@ -9,8 +9,8 @@ const Contact = () => {
         {
             icon: <Mail className="text-indigo-600" />,
             title: "Email Support",
-            primary: "support@university.edu",
-            secondary: "registrar@university.edu",
+            primary: "support@zeta.edu",
+            secondary: "registrar@zeta.edu",
             description: "For technical queries, academic records, and general support."
         },
         {
@@ -24,7 +24,7 @@ const Contact = () => {
             icon: <MapPin className="text-indigo-600" />,
             title: "Campus Office",
             primary: "Block AB-1, Suite 204",
-            secondary: "Main University Campus",
+            secondary: "Main Zeta University Campus",
             description: "Visit us for in-person consultations and document verification."
         }
     ];
@@ -128,7 +128,7 @@ const Contact = () => {
                                 <p className="text-sm font-bold">Mon - Sun • 24 / 7 Online</p>
                             </div>
                             <div>
-                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">University Library</p>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Zeta University Library</p>
                                 <p className="text-sm font-bold">Mon - Sat • 08:00 - 22:00</p>
                             </div>
                         </div>

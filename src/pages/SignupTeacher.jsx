@@ -47,7 +47,7 @@ const TeacherRegistration = () => {
                         <CheckCircle2 size={40} />
                     </div>
                     <h1 className="text-2xl font-black text-slate-900 tracking-tight mb-2">Faculty Joined!</h1>
-                    <p className="text-slate-500 text-sm mb-10">Welcome to the university, Prof. {formData.name}. Your faculty account has been created.</p>
+                    <p className="text-slate-500 text-sm mb-10">Welcome to Zeta University, Prof. {formData.name}. Your faculty account has been created.</p>
 
                     <div className="bg-slate-900 rounded-3xl p-8 mb-10">
                         <p className="text-slate-400 text-[10px] uppercase font-black tracking-[0.2em] mb-2">Employee ID</p>
@@ -75,8 +75,8 @@ const TeacherRegistration = () => {
                     <div className="inline-flex items-center justify-center w-14 h-14 bg-white rounded-2xl mb-6 shadow-xl shadow-white/10">
                         <GraduationCap className="text-slate-900" size={28} />
                     </div>
-                    <h1 className="text-white text-2xl font-black tracking-tight uppercase">Faculty Portal</h1>
-                    <p className="text-slate-400 text-xs mt-2 uppercase tracking-[0.2em] font-bold">New Teacher Registration</p>
+                    <h1 className="text-white text-2xl font-black tracking-tight uppercase">Faculty Registration</h1>
+                    <p className="text-slate-400 text-xs mt-2 uppercase tracking-[0.2em] font-bold">Zeta University</p>
                 </div>
 
                 <div className="p-10">
@@ -131,7 +131,7 @@ const TeacherRegistration = () => {
                                         required
                                         value={formData.email}
                                         onChange={handleChange}
-                                        placeholder="jane.doe@university.edu"
+                                        placeholder="jane.doe@zeta.edu"
                                         className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition-all"
                                     />
                                 </div>

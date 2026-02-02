@@ -45,7 +45,7 @@ const Profile = () => {
     <div className="py-8">
       <PageHeader
         title="Profile"
-        subtitle="Manage your personal and academic university record."
+        subtitle="Manage your personal and academic Zeta University record."
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -91,7 +91,7 @@ const Profile = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <MiniInfo label="Email" value={profile.email} />
-           {/* <MiniInfo label="Phone" value={profile.phone} />
+            {/* <MiniInfo label="Phone" value={profile.phone} />
             <MiniInfo label="Date of Birth" value={profile.dob} />
             <MiniInfo
               label="Address"
@@ -100,11 +100,11 @@ const Profile = () => {
             />
             */}
           </div>
-            
+
           {/* Footer strip */}
           <div className="mt-6 border border-slate-100 rounded-2xl p-4 bg-slate-50/60">
             <p className="text-xs text-slate-500">
-              Your profile information is securely linked to the University Academic Registry.
+              Your profile information is securely linked to the Zeta University Academic Registry.
             </p>
           </div>
         </div>

@@ -61,10 +61,10 @@ const Footer = () => {
                 <div className="pt-8 border-t border-slate-800 w-full flex flex-col items-center gap-6">
                     <div className="flex items-center gap-2 opacity-50">
                         <div className="w-4 h-4 bg-white rounded-sm"></div>
-                        <span className="text-[10px] font-bold uppercase tracking-widest">Campus Portal</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest">Zeta University</span>
                     </div>
                     <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-[10px] font-medium text-slate-500 uppercase tracking-widest">
-                        <p>© {new Date().getFullYear()} University</p>
+                        <p>© {new Date().getFullYear()} Zeta University</p>
                         <Link to="/privacy" className="hover:text-white transition-colors">Privacy</Link>
                         <Link to="/terms" className="hover:text-white transition-colors">Terms</Link>
                         <Link to="/help" className="hover:text-white transition-colors">Help</Link>

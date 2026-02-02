@@ -13,7 +13,7 @@ const Privacy = () => {
                     <section className="mb-10">
                         <h2 className="text-xl font-black text-slate-900 uppercase tracking-widest mb-6">1. Introduction</h2>
                         <p className="text-slate-600 leading-relaxed">
-                            Welcome to the University Campus Portal. We are committed to protecting your privacy and ensuring the security of your personal and academic information. This Privacy Policy outlines our practices regarding information collection, usage, and disclosure when you use our portal services.
+                            Welcome to the Zeta University Campus Portal. We are committed to protecting your privacy and ensuring the security of your personal and academic information. This Privacy Policy outlines our practices regarding information collection, usage, and disclosure when you use our portal services.
                         </p>
                     </section>
 
@@ -49,7 +49,7 @@ const Privacy = () => {
                     <section className="mb-10">
                         <h2 className="text-xl font-black text-slate-900 uppercase tracking-widest mb-6">4. Data Sharing and Disclosure</h2>
                         <p className="text-slate-600 leading-relaxed">
-                            The University does not sell or rent your personal information. We may share data with legal authorities when required by law or with academic partners for essential educational services, ensuring they adhere to equivalent privacy standards.
+                            Zeta University does not sell or rent your personal information. We may share data with legal authorities when required by law or with academic partners for essential educational services, ensuring they adhere to equivalent privacy standards.
                         </p>
                     </section>
 
@@ -63,7 +63,7 @@ const Privacy = () => {
                     <section>
                         <h2 className="text-xl font-black text-slate-900 uppercase tracking-widest mb-6">6. Contact Information</h2>
                         <p className="text-slate-600 leading-relaxed">
-                            For any privacy-related inquiries or concerns, please contact our Data Protection Officer at <strong>privacy@university.edu</strong>.
+                            For any privacy-related inquiries or concerns, please contact our Data Protection Officer at <strong>privacy@zeta.edu</strong>.
                         </p>
                     </section>
                 </div>

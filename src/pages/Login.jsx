@@ -61,7 +61,7 @@ const Login = () => {
                     <h1 className="text-white text-2xl font-black tracking-tight uppercase">
                         {role === 'admin' ? "Admin Terminal" : role === 'teacher' ? "Faculty Portal" : "Student Portal"}
                     </h1>
-                    <p className="text-slate-400 text-xs mt-2 uppercase tracking-[0.2em] font-bold">University Management System</p>
+                    <p className="text-slate-400 text-xs mt-2 uppercase tracking-[0.2em] font-bold">Zeta University</p>
                 </div>
 
                 <div className="p-10">
@@ -118,7 +118,7 @@ const Login = () => {
                     {role !== 'admin' && (
                         <div className="mt-8 text-center">
                             <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">
-                                {role === 'teacher' ? "New faculty member?" : "New to portal?"}{" "}
+                                {role === 'teacher' ? "New Faculty?" : "New Student?"}{" "}
                                 <Link to={role === 'teacher' ? "/signup-teacher" : "/signup"} className="text-slate-900 hover:text-indigo-600 transition-colors">
                                     Register Here
                                 </Link>

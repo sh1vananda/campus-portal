@@ -27,9 +27,9 @@ const Header = ({ onMenuClick }) => {
         </button>
         <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
-            <span className="text-slate-900 font-bold text-sm">U</span>
+            <span className="text-slate-900 font-bold text-sm">ZU</span>
           </div>
-          <h1 className="text-sm font-bold tracking-[0.2em] hidden sm:block uppercase">CAMPUS PORTAL</h1>
+          <h1 className="text-sm font-bold tracking-[0.2em] hidden sm:block uppercase">ZETA UNIVERSITY</h1>
         </Link>
       </div>
 
