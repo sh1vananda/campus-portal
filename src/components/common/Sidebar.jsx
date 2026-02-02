@@ -14,8 +14,7 @@ import {
     Activity,
     FilePlus2,
     UserPlus,
-    ShieldCheck,
-    Settings
+    ClipboardCheck
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -36,6 +35,7 @@ const sidebarItems = [
     { name: 'Grades', icon: TrendingUp, path: '/grades', roles: ['student'] },
     { name: 'Ticketing Support', icon: Ticket, path: '/support', roles: ['student', 'teacher'] },
     { name: 'Create Assignment', icon: FilePlus2, path: '/teacher/assignments/new', roles: ['teacher'] },
+    { name: 'Assignment Submissions', icon: ClipboardCheck, path: '/teacher/assignments/submissions', roles: ['teacher'] },
     { name: 'Class List', icon: GraduationCap, path: '/teacher/classlist', roles: ['teacher'] },
     { name: 'Course Allocation', icon: UserPlus, path: '/teacher/allotcourse', roles: ['teacher'] }
 

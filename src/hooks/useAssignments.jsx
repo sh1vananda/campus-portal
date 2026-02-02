@@ -135,6 +135,43 @@ export const useAssignments = () => {
         return data;
     }, [fetchAssignments]);
 
+    const fetchTeacherSubmissions = useCallback(async (teacherEmpId) => {
+        if (!teacherEmpId) return [];
+        const response = await fetch(`/api/assignments/teacher/${teacherEmpId}/submissions`);
+        const isJson = response.headers.get('content-type')?.includes('application/json');
+        const data = isJson ? await response.json() : null;
+
+        if (!response.ok) {
+            throw new Error(data?.message || 'Failed to fetch teacher submissions');
+        }
+
+        return data?.submissions || data || [];
+    }, []);
+
+    const gradeSubmission = useCallback(async ({ assignmentId, submissionId, marks, feedback, teacherEmpId }) => {
+        if (!assignmentId || !submissionId) {
+            throw new Error('Assignment ID and submission ID are required');
+        }
+
+        const payload = { marks, feedback, teacherEmpId };
+        const response = await fetch(`/api/assignments/${assignmentId}/submissions/${submissionId}/grade`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const isJson = response.headers.get('content-type')?.includes('application/json');
+        const data = isJson ? await response.json() : null;
+        const fallbackText = !isJson ? await response.text() : '';
+
+        if (!response.ok) {
+            const message = data?.message || fallbackText || `Failed to grade submission (status ${response.status})`;
+            throw new Error(message);
+        }
+
+        return data;
+    }, []);
+
     return {
         assignments,
         loading,
@@ -142,6 +179,8 @@ export const useAssignments = () => {
         refresh: fetchAssignments,
         submitAssignment,
         fetchSubmissionById,
-        createAssignment
+        createAssignment,
+        fetchTeacherSubmissions,
+        gradeSubmission
     };
 };
