@@ -24,6 +24,7 @@ import TeacherAssignmentCreate from '../pages/teacher/AssignmentCreate';
 import { useAuth } from '../context/AuthContext';
 import ClassList from '../pages/teacher/classList';
 import CourseAllocation from '../pages/teacher/CourseAllocation'
+import AdminHome from '../pages/AdminHome';
 const AppRoutes = () => {
     const { user } = useAuth();
 
@@ -48,7 +49,11 @@ const AppRoutes = () => {
                 }
             >
                 {/* Index page changes based on role */}
-                <Route index element={user?.role === 'teacher' ? <FacultyHome /> : <Home />} />
+                <Route index element={
+                    user?.role === 'admin' ? <AdminHome /> :
+                        user?.role === 'teacher' ? <FacultyHome /> :
+                            <Home />
+                } />
 
                 {/* Common/Student Routes */}
                 <Route path="attendance" element={<Attendance />} />
@@ -72,6 +77,13 @@ const AppRoutes = () => {
                         <Route path="teacher/assignments/new" element={<TeacherAssignmentCreate />} />
                         <Route path="teacher/classlist" element={<ClassList />} />
                         <Route path="teacher/allotcourse" element={<CourseAllocation />} />
+                    </>
+                )}
+
+                {user?.role === 'admin' && (
+                    <>
+                        {/* Admin specific routes will be added here */}
+                        <Route path="admin" element={<AdminHome />} />
                     </>
                 )}
 

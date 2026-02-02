@@ -46,6 +46,12 @@ const Login = () => {
                             >
                                 Faculty
                             </button>
+                            <button
+                                onClick={() => setRole('admin')}
+                                className={`px-6 py-2 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all ${role === 'admin' ? 'bg-white text-slate-900 shadow-lg' : 'text-slate-400 hover:text-white'}`}
+                            >
+                                Admin
+                            </button>
                         </div>
                     </div>
 
@@ -53,7 +59,7 @@ const Login = () => {
                         <GraduationCap className="text-slate-900" size={28} />
                     </div>
                     <h1 className="text-white text-2xl font-black tracking-tight uppercase">
-                        {role === 'teacher' ? "Faculty Portal" : "Student Portal"}
+                        {role === 'admin' ? "Admin Terminal" : role === 'teacher' ? "Faculty Portal" : "Student Portal"}
                     </h1>
                     <p className="text-slate-400 text-xs mt-2 uppercase tracking-[0.2em] font-bold">University Management System</p>
                 </div>
@@ -76,7 +82,7 @@ const Login = () => {
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder={role === 'teacher' ? "Faculty Email" : "Student Email"}
+                                    placeholder={role === 'admin' ? "Admin Email" : role === 'teacher' ? "Faculty Email" : "Student Email"}
                                     className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white transition-all"
                                     required
                                 />
@@ -104,19 +110,21 @@ const Login = () => {
                             {loading ? (
                                 <Loader2 className="animate-spin" size={20} />
                             ) : (
-                                "SECURE LOGIN"
+                                "LOGIN"
                             )}
                         </button>
                     </form>
 
-                    <div className="mt-10 pt-8 border-t border-slate-50 text-center">
-                        <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">
-                            {role === 'teacher' ? "New faculty member?" : "New to portal?"}{" "}
-                            <Link to={role === 'teacher' ? "/signup-teacher" : "/signup"} className="text-slate-900 hover:text-indigo-600 transition-colors">
-                                Register Here
-                            </Link>
-                        </p>
-                    </div>
+                    {role !== 'admin' && (
+                        <div className="mt-8 text-center">
+                            <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">
+                                {role === 'teacher' ? "New faculty member?" : "New to portal?"}{" "}
+                                <Link to={role === 'teacher' ? "/signup-teacher" : "/signup"} className="text-slate-900 hover:text-indigo-600 transition-colors">
+                                    Register Here
+                                </Link>
+                            </p>
+                        </div>
+                    )}
                 </div>
             </div>
 

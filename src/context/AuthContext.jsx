@@ -15,7 +15,25 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password, role = 'student') => {
         try {
-            const endpoint = role === 'teacher' ? '/api/auth/login/teacher' : '/api/auth/login';
+            // Hardcoded Admin Login
+            if (role === 'admin' && email === 'admin@college.com' && password === 'admin123') {
+                const adminData = {
+                    id: 'admin-001',
+                    rollNo: 'ADMIN',
+                    role: 'admin',
+                    name: 'System Administrator',
+                    email: 'admin',
+                    department: 'Management'
+                };
+                setUser(adminData);
+                localStorage.setItem('portal_user', JSON.stringify(adminData));
+                return adminData;
+            }
+
+            let endpoint = '/api/auth/login';
+            if (role === 'teacher') endpoint = '/api/auth/login/teacher';
+            if (role === 'admin') endpoint = '/api/auth/login/admin';
+
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

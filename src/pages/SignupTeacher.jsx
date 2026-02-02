@@ -192,7 +192,7 @@ const TeacherRegistration = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-5 bg-slate-900 text-white rounded-2xl font-black text-xs tracking-[0.2em] hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center mt-4"
+                            className="w-full py-5 bg-slate-900 text-white rounded-2xl font-black text-xs tracking-[0.2em] hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center mt-6"
                         >
                             {loading ? (
                                 <Loader2 className="animate-spin" size={20} />
@@ -201,6 +201,15 @@ const TeacherRegistration = () => {
                             )}
                         </button>
                     </form>
+
+                    <div className="mt-6 text-center">
+                        <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">
+                            Already have an account?{" "}
+                            <Link to="/login" className="text-slate-900 hover:text-indigo-600 transition-colors">
+                                Login Here
+                            </Link>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
