@@ -14,7 +14,9 @@ import {
     Activity,
     FilePlus2,
     UserPlus,
-    ClipboardCheck
+    ClipboardCheck,
+    BookPlus,
+    BookOpen
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -35,7 +37,9 @@ const sidebarItems = [
     { name: 'Create Assignment', icon: FilePlus2, path: '/teacher/assignments/new', roles: ['teacher'] },
     { name: 'Assignment Submissions', icon: ClipboardCheck, path: '/teacher/assignments/submissions', roles: ['teacher'] },
     { name: 'Class List', icon: GraduationCap, path: '/teacher/classlist', roles: ['teacher'] },
-    { name: 'Course Allocation', icon: UserPlus, path: '/teacher/allotcourse', roles: ['teacher'] }
+    { name: 'Course Allocation', icon: UserPlus, path: '/teacher/allotcourse', roles: ['teacher'] },
+    { name: 'Create Course', icon: BookPlus, path: '/admin/course-create', roles: ['admin'] },
+    { name: 'All Courses', icon: BookOpen, path: '/admin/all-courses', roles: ['admin'] }
 
 ];
 
@@ -56,7 +60,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         fixed top-0 left-0 bottom-0 z-40 w-72 bg-white transform transition-transform duration-300 ease-out flex flex-col
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
-                <div className="flex items-center justify-between px-6 h-16 border-b border-slate-100 flex-shrink-0">
+                <div className="flex items-center justify-between px-6 h-16 border-b border-slate-100 shrink-0">
                     <span className="text-xs font-bold text-slate-900 uppercase tracking-widest">Navigation</span>
                     <button onClick={onClose} className="p-2 -mr-2 text-slate-400 hover:text-slate-900">
                         <X size={20} />

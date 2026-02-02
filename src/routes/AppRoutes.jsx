@@ -25,7 +25,9 @@ import TeacherAssignmentSubmissions from '../pages/teacher/AssignmentSubmissions
 import { useAuth } from '../context/AuthContext';
 import ClassList from '../pages/teacher/classList';
 import CourseAllocation from '../pages/teacher/CourseAllocation'
-import AdminHome from '../pages/AdminHome';
+import AdminHome from '../pages/admin/AdminHome';
+import CourseCreate from '../pages/admin/CourseCreate';
+import AllCourses from '../pages/admin/AllCourses';
 const AppRoutes = () => {
     const { user } = useAuth();
 
@@ -84,8 +86,9 @@ const AppRoutes = () => {
 
                 {user?.role === 'admin' && (
                     <>
-                        {/* Admin specific routes will be added here */}
                         <Route path="admin" element={<AdminHome />} />
+                        <Route path="admin/course-create" element={<CourseCreate />} />
+                        <Route path="admin/all-courses" element={<AllCourses />} />
                     </>
                 )}
 

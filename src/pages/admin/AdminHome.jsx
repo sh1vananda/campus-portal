@@ -1,5 +1,5 @@
 import React from 'react';
-import PageHeader from '../components/layout/PageHeader';
+import PageHeader from '../../components/layout/PageHeader';
 import { Users, BookOpen, Calendar, ShieldCheck, Activity } from 'lucide-react';
 
 const AdminHome = () => {
