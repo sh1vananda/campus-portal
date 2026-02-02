@@ -21,6 +21,7 @@ import Terms from '../pages/Terms';
 import Help from '../pages/Help';
 import Contact from '../pages/Contact';
 import TeacherAssignmentCreate from '../pages/teacher/AssignmentCreate';
+import TeacherAssignmentSubmissions from '../pages/teacher/AssignmentSubmissions';
 import { useAuth } from '../context/AuthContext';
 import ClassList from '../pages/teacher/classList';
 import CourseAllocation from '../pages/teacher/CourseAllocation'
@@ -70,6 +71,7 @@ const AppRoutes = () => {
                 {user?.role === 'teacher' && (
                     <>
                         <Route path="teacher/assignments/new" element={<TeacherAssignmentCreate />} />
+                        <Route path="teacher/assignments/submissions" element={<TeacherAssignmentSubmissions />} />
                         <Route path="teacher/classlist" element={<ClassList />} />
                         <Route path="teacher/allotcourse" element={<CourseAllocation />} />
                     </>

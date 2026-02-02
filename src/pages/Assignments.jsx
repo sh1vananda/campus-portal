@@ -340,6 +340,49 @@ const Assignments = () => {
                             </div>
                         </div>
 
+                        {selectedAssignment.status === 'submitted' && selectedAssignment.submissions && selectedAssignment.submissions.length > 0 && (() => {
+                            const userSubmission = selectedAssignment.submissions[0];
+                            const hasGrade = userSubmission?.marks !== null && userSubmission?.marks !== undefined;
+                            
+                            if (hasGrade) {
+                                return (
+                                    <div className='bg-emerald-50 border border-emerald-100 rounded-3xl p-6 mb-10'>
+                                        <div className='flex items-center gap-3 mb-4'>
+                                            <CheckCircle size={20} className='text-emerald-600' />
+                                            <p className='text-[10px] font-black uppercase text-emerald-900 tracking-widest'>Graded</p>
+                                        </div>
+                                        <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                                            <div>
+                                                <p className='text-[10px] font-black uppercase text-emerald-900/60 tracking-widest mb-2'>Score</p>
+                                                <p className='text-3xl font-black text-emerald-900'>{userSubmission.marks}</p>
+                                            </div>
+                                            {userSubmission.feedback && (
+                                                <div>
+                                                    <p className='text-[10px] font-black uppercase text-emerald-900/60 tracking-widest mb-2'>Feedback</p>
+                                                    <p className='text-sm text-emerald-900 leading-relaxed'>{userSubmission.feedback}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                        {userSubmission.gradedAt && (
+                                            <p className='text-[10px] text-emerald-900/60 mt-4 font-bold'>Graded on {formatDate(userSubmission.gradedAt)}</p>
+                                        )}
+                                    </div>
+                                );
+                            } else {
+                                return (
+                                    <div className='bg-amber-50 border border-amber-100 rounded-3xl p-6 mb-10'>
+                                        <div className='flex items-center gap-3'>
+                                            <Clock size={20} className='text-amber-600' />
+                                            <div>
+                                                <p className='text-[10px] font-black uppercase text-amber-900 tracking-widest'>Not Graded Yet</p>
+                                                <p className='text-xs text-amber-900/60 mt-1'>Your submission is awaiting review by the instructor.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            }
+                        })()}
+
                         <button
                             onClick={() => setShowSubmitForm(true)}
                             className='w-full py-5 bg-slate-900 text-white rounded-[24px] font-black tracking-[0.2em] text-[11px] uppercase hover:bg-slate-800 transition-all shadow-xl shadow-slate-200'
