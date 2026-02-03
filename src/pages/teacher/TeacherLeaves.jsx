@@ -25,6 +25,16 @@ const TeacherLeaves = () => {
   useEffect(() => {
     if (user?.id) fetchLeaves();
   }, [user?.id]);
+  const getStatusStyle = (status) => {
+    switch (status) {
+      case "approved":
+        return "bg-green-100 text-green-700";
+      case "rejected":
+        return "bg-red-100 text-red-700";
+      default:
+        return "bg-yellow-100 text-yellow-700";
+    }
+  };
 
   return (
     <div className="py-8 max-w-5xl mx-auto">
@@ -75,18 +85,14 @@ const TeacherLeaves = () => {
                 )}
               </div>
 
-              <span
-                className={`px-3 py-1 rounded-lg text-xs font-bold capitalize
-                  ${
-                    leave.status === "approved"
-                      ? "bg-green-100 text-green-700"
-                      : leave.status === "rejected"
-                      ? "bg-red-100 text-red-700"
-                      : "bg-yellow-100 text-yellow-700"
-                  }`}
-              >
-                {leave.status}
-              </span>
+<span
+  className={`px-3 py-1 rounded-lg text-xs font-bold capitalize ${getStatusStyle(
+    leave.status.toLowerCase()
+  )}`}
+>
+  {leave.status}
+</span>
+
             </div>
           ))}
         </div>
