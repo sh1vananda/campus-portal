@@ -28,6 +28,10 @@ import CourseAllocation from '../pages/teacher/CourseAllocation'
 import AdminHome from '../pages/admin/AdminHome';
 import CourseCreate from '../pages/admin/CourseCreate';
 import AllCourses from '../pages/admin/AllCourses';
+import ApplyLeaves from '../pages/teacher/ApplyLeaveForm';
+import ApproveLeaves from '../pages/admin/approveLeaves';
+import TeacherLeaves from '../pages/teacher/TeacherLeaves';
+
 const AppRoutes = () => {
     const { user } = useAuth();
 
@@ -81,6 +85,8 @@ const AppRoutes = () => {
                         <Route path="teacher/assignments/submissions" element={<TeacherAssignmentSubmissions />} />
                         <Route path="teacher/classlist" element={<ClassList />} />
                         <Route path="teacher/allotcourse" element={<CourseAllocation />} />
+                        <Route path="teacher/leaves" element={<TeacherLeaves />} />
+
                     </>
                 )}
 
@@ -89,6 +95,7 @@ const AppRoutes = () => {
                         <Route path="admin" element={<AdminHome />} />
                         <Route path="admin/course-create" element={<CourseCreate />} />
                         <Route path="admin/all-courses" element={<AllCourses />} />
+                        <Route path="admin/approveleaves" element={<ApproveLeaves />} />
                     </>
                 )}
 

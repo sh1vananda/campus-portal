@@ -39,8 +39,9 @@ const sidebarItems = [
     { name: 'Class List', icon: GraduationCap, path: '/teacher/classlist', roles: ['teacher'] },
     { name: 'Course Allocation', icon: UserPlus, path: '/teacher/allotcourse', roles: ['teacher'] },
     { name: 'Create Course', icon: BookPlus, path: '/admin/course-create', roles: ['admin'] },
-    { name: 'All Courses', icon: BookOpen, path: '/admin/all-courses', roles: ['admin'] }
-
+    { name: 'All Courses', icon: BookOpen, path: '/admin/all-courses', roles: ['admin'] },
+    { name: 'Leaves', icon: UserPlus, path: '/teacher/leaves', roles: ['teacher'] },
+    { name: 'Leave Requests', icon: UserPlus, path: '/admin/approveleaves', roles: ['admin'] },
 ];
 
 const Sidebar = ({ isOpen, onClose }) => {
