@@ -17,6 +17,7 @@ const ApproveLeaves = () => {
       const res = await fetch("/api/leaves");
       const data = await res.json();
       setLeaves(data.leaves || data);
+    // eslint-disable-next-line no-unused-vars
     } catch (err) {
       alert("Failed to load leave requests");
     } finally {

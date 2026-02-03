@@ -29,7 +29,7 @@ import AdminHome from '../pages/admin/AdminHome';
 import CourseCreate from '../pages/admin/CourseCreate';
 import AllCourses from '../pages/admin/AllCourses';
 import ApplyLeaves from '../pages/teacher/ApplyLeaveForm';
-import ApproveLeaves from '../pages/admin/approveLeaves';
+import ApproveLeaves from '../pages/admin/AproveLeaves';
 import TeacherLeaves from '../pages/teacher/TeacherLeaves';
 
 const AppRoutes = () => {
