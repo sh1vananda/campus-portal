@@ -31,6 +31,7 @@ import AllCourses from '../pages/admin/AllCourses';
 import ApplyLeaves from '../pages/teacher/ApplyLeaveForm';
 import ApproveLeaves from '../pages/admin/AproveLeaves';
 import TeacherLeaves from '../pages/teacher/TeacherLeaves';
+import TicketRendering from '../pages/admin/TicketRendering';
 
 const AppRoutes = () => {
     const { user } = useAuth();
@@ -62,23 +63,30 @@ const AppRoutes = () => {
                             <Home />
                 } />
 
-                {/* Common/Student Routes */}
-                <Route path="attendance" element={<Attendance />} />
-                <Route path="timetable" element={<Timetable />} />
-                <Route path="grades" element={<Grades />} />
-                <Route path="assignments" element={<Assignments />} />
-                <Route path="fees" element={<Fees />} />
+                {/* Universal Routes (All Roles) */}
+                <Route path="profile" element={<Profile />} />
+                <Route path="support" element={<Support />} />
                 <Route path="events" element={<Events />} />
                 <Route path="calendar" element={<Calendar />} />
-                <Route path="support" element={<Support />} />
-                <Route path="registration" element={<CourseRegistration />} />
-                <Route path="profile" element={<Profile />} />
-                <Route path="exams" element={<Exams />} />
                 <Route path="privacy" element={<Privacy />} />
                 <Route path="terms" element={<Terms />} />
                 <Route path="help" element={<Help />} />
                 <Route path="contact" element={<Contact />} />
 
+                {/* Student Only Routes */}
+                {user?.role === 'student' && (
+                    <>
+                        <Route path="attendance" element={<Attendance />} />
+                        <Route path="timetable" element={<Timetable />} />
+                        <Route path="grades" element={<Grades />} />
+                        <Route path="assignments" element={<Assignments />} />
+                        <Route path="fees" element={<Fees />} />
+                        <Route path="registration" element={<CourseRegistration />} />
+                        <Route path="exams" element={<Exams />} />
+                    </>
+                )}
+
+                {/* Faculty Only Routes */}
                 {user?.role === 'teacher' && (
                     <>
                         <Route path="teacher/assignments/new" element={<TeacherAssignmentCreate />} />
@@ -86,16 +94,17 @@ const AppRoutes = () => {
                         <Route path="teacher/classlist" element={<ClassList />} />
                         <Route path="teacher/allotcourse" element={<CourseAllocation />} />
                         <Route path="teacher/leaves" element={<TeacherLeaves />} />
-
                     </>
                 )}
 
+                {/* Admin Only Routes */}
                 {user?.role === 'admin' && (
                     <>
                         <Route path="admin" element={<AdminHome />} />
                         <Route path="admin/course-create" element={<CourseCreate />} />
                         <Route path="admin/all-courses" element={<AllCourses />} />
                         <Route path="admin/approveleaves" element={<ApproveLeaves />} />
+                        <Route path="admin/tickets" element= {<TicketRendering />} />
                     </>
                 )}
 
