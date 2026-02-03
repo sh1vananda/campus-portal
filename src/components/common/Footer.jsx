@@ -1,42 +1,55 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Footer = () => {
+    const { user } = useAuth();
+    const role = user?.role || 'student';
+
     const footerLinks = [
         {
             title: 'Academic',
             links: [
-                { name: 'Courses', path: '/registration' },
-                { name: 'Calendar', path: '/calendar' },
-                { name: 'Exams', path: '/exams' },
-                { name: 'Assignments', path: '/assignments' }
+                { name: 'Courses', path: '/registration', roles: ['student'] },
+                { name: 'Calendar', path: '/calendar', roles: ['student', 'teacher'] },
+                { name: 'Exams', path: '/exams', roles: ['student'] },
+                { name: 'Assignments', path: '/assignments', roles: ['student'] },
+                { name: 'Create Assignment', path: '/teacher/assignments/new', roles: ['teacher'] },
+                { name: 'Class List', path: '/teacher/classlist', roles: ['teacher'] }
             ]
         },
         {
             title: 'Services',
             links: [
-                { name: 'Finance', path: '/fees' },
-                { name: 'IT Support', path: '/support' },
-                { name: 'Attendance', path: '/attendance' },
-                { name: 'Grades', path: '/grades' }
+                { name: 'Finance', path: '/fees', roles: ['student'] },
+                { name: 'IT Support', path: '/support', roles: ['student', 'teacher'] },
+                { name: 'Attendance', path: '/attendance', roles: ['student'] },
+                { name: 'Grades', path: '/grades', roles: ['student'] },
+                { name: 'Assignment Submissions', path: '/teacher/assignments/submissions', roles: ['teacher'] }
             ]
         },
         {
             title: 'University',
             links: [
-                { name: 'Profile', path: '/profile' },
-                { name: 'About', path: '#' },
-                { name: 'Contact', path: '/contact' },
-                { name: 'Help Center', path: '/help' }
+                { name: 'Profile', path: '/profile', roles: ['student', 'teacher'] },
+                { name: 'About', path: '#', roles: ['student', 'teacher', 'admin'] },
+                { name: 'Contact', path: '/contact', roles: ['student', 'teacher', 'admin'] },
+                { name: 'Help Center', path: '/help', roles: ['student', 'teacher', 'admin'] }
             ]
         }
     ];
+
+    // Filter loops to remove links not belonging to current role
+    const filteredSections = footerLinks.map(section => ({
+        ...section,
+        links: section.links.filter(link => link.roles.includes(role))
+    })).filter(section => section.links.length > 0);
 
     return (
         <footer className="w-full bg-slate-900 text-white py-16 px-6 mt-auto">
             <div className="max-w-6xl mx-auto flex flex-col items-center">
                 {/* Centered Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 text-center w-full mb-16">
-                    {footerLinks.map((section) => (
+                    {filteredSections.map((section) => (
                         <div key={section.title} className="flex flex-col items-center">
                             <h3 className="text-[10px] font-black uppercase tracking-[0.2em] mb-6 text-slate-400">
                                 {section.title}
