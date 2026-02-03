@@ -31,6 +31,7 @@ import AllCourses from '../pages/admin/AllCourses';
 import ApplyLeaves from '../pages/teacher/ApplyLeaveForm';
 import ApproveLeaves from '../pages/admin/AproveLeaves';
 import TeacherLeaves from '../pages/teacher/TeacherLeaves';
+import TicketRendering from '../pages/admin/TicketRendering';
 
 const AppRoutes = () => {
     const { user } = useAuth();
@@ -103,6 +104,7 @@ const AppRoutes = () => {
                         <Route path="admin/course-create" element={<CourseCreate />} />
                         <Route path="admin/all-courses" element={<AllCourses />} />
                         <Route path="admin/approveleaves" element={<ApproveLeaves />} />
+                        <Route path="admin/tickets" element= {<TicketRendering />} />
                     </>
                 )}
 
