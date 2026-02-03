@@ -14,7 +14,9 @@ const Footer = () => {
                 { name: 'Exams', path: '/exams', roles: ['student'] },
                 { name: 'Assignments', path: '/assignments', roles: ['student'] },
                 { name: 'Create Assignment', path: '/teacher/assignments/new', roles: ['teacher'] },
-                { name: 'Class List', path: '/teacher/classlist', roles: ['teacher'] }
+                { name: 'Class List', path: '/teacher/classlist', roles: ['teacher'] },
+                { name: 'Course Management', path: '/admin/all-courses', roles: ['admin'] },
+                { name: 'Leave Approvals', path: '/admin/approveleaves', roles: ['admin'] }
             ]
         },
         {
@@ -24,7 +26,8 @@ const Footer = () => {
                 { name: 'IT Support', path: '/support', roles: ['student', 'teacher'] },
                 { name: 'Attendance', path: '/attendance', roles: ['student'] },
                 { name: 'Grades', path: '/grades', roles: ['student'] },
-                { name: 'Assignment Submissions', path: '/teacher/assignments/submissions', roles: ['teacher'] }
+                { name: 'Assignment Submissions', path: '/teacher/assignments/submissions', roles: ['teacher'] },
+                { name: 'Manage Tickets', path: '/admin/tickets', roles: ['admin'] }
             ]
         },
         {

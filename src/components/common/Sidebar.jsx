@@ -42,6 +42,7 @@ const sidebarItems = [
     { name: 'All Courses', icon: BookOpen, path: '/admin/all-courses', roles: ['admin'] },
     { name: 'Leaves', icon: UserPlus, path: '/teacher/leaves', roles: ['teacher'] },
     { name: 'Leave Requests', icon: UserPlus, path: '/admin/approveleaves', roles: ['admin'] },
+    { name: 'Support Tickets', icon: Ticket, path: '/admin/tickets', roles: ['admin'] },
 ];
 
 const Sidebar = ({ isOpen, onClose }) => {
