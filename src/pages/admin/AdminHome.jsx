@@ -175,6 +175,26 @@ const AdminHome = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Exam Management Widget */}
+            <div className="bg-white border border-slate-100 rounded-[40px] p-8 shadow-sm">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
+                    <div>
+                        <h3 className="text-lg font-black text-slate-900 uppercase tracking-widest flex items-center gap-3 mb-2">
+                            <Calendar size={20} className="text-green-600" />
+                            Exam Management
+                        </h3>
+                        <p className="text-slate-500 text-sm font-medium">
+                            Create and manage examinations for all courses and departments.
+                        </p>
+                    </div>
+                    <div className="flex gap-4">
+                        <Link to="/admin/exam-create" className="px-6 py-3 bg-green-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-green-700 transition-all">
+                            Create Exam
+                        </Link>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

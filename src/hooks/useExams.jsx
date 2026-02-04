@@ -4,32 +4,63 @@ import { useAuth } from '../context/AuthContext';
 export const useExams = () => {
     const { user } = useAuth();
     const [allExams, setAllExams] = useState([]);
+    const [studentCourses, setStudentCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchExams = async () => {
+        const fetchData = async () => {
             try {
                 setLoading(true);
-                const response = await fetch('/api/exams'); // Using VITE proxy
-                if (!response.ok) throw new Error('Failed to fetch exams');
-                const data = await response.json();
-                setAllExams(data);
+                
+                // Fetch both exams and student's courses
+                const [examsResponse, coursesResponse] = await Promise.all([
+                    fetch('/api/exams'),
+                    user?.rollNo ? fetch(`/api/courses/${user.rollNo}`) : Promise.resolve({ ok: false })
+                ]);
+
+                if (!examsResponse.ok) throw new Error('Failed to fetch exams');
+                
+                const examsData = await examsResponse.json();
+                setAllExams(examsData);
+
+                if (coursesResponse.ok) {
+                    const coursesData = await coursesResponse.json();
+                    const courses = coursesData.courses || (Array.isArray(coursesData) ? coursesData : []);
+                    setStudentCourses(courses);
+                }
             } catch (err) {
-                console.error('Error fetching exams:', err);
+                console.error('Error fetching data:', err);
                 setError(err.message);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchExams();
-    }, []);
+        fetchData();
+    }, [user?.rollNo]);
 
-    // Filter exams where the student is in the course.students list
-    const studentExams = allExams.filter(exam =>
-        exam.course?.students?.includes(user?.id)
-    ).sort((a, b) => new Date(a.examDate) - new Date(b.examDate));
+    // Create a map of courseCode to courseName for quick lookup
+    const courseMap = {};
+    studentCourses.forEach(course => {
+        courseMap[course.courseCode] = course.courseName;
+    });
+
+    // Get course codes that the student is registered for
+    const studentCourseCodes = studentCourses.map(course => course.courseCode);
+
+    // Filter exams and enrich with course names
+    const studentExams = allExams
+        .filter(exam =>
+            exam.course?.students?.includes(user?.id) || 
+            studentCourseCodes.includes(exam.courseCode)
+        )
+        .map(exam => ({
+            ...exam,
+            // Use examName, or fallback to courseName from course object or courseMap
+            courseName: exam.examName || exam.courseName || exam.course?.courseName || courseMap[exam.courseCode] || exam.courseCode
+        }))
+        .sort((a, b) => new Date(a.examDate) - new Date(b.examDate));
 
     const getNextExam = () => {
         const futureExams = studentExams.filter(exam => new Date(exam.examDate) >= new Date().setHours(0, 0, 0, 0));
@@ -38,7 +69,7 @@ export const useExams = () => {
 
     return {
         exams: studentExams,
-        allExams, // Useful if we ever need the full list
+        allExams,
         loading,
         error,
         getNextExam

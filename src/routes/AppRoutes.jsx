@@ -32,6 +32,7 @@ import ApplyLeaves from '../pages/teacher/ApplyLeaveForm';
 import ApproveLeaves from '../pages/admin/AproveLeaves';
 import TeacherLeaves from '../pages/teacher/TeacherLeaves';
 import TicketRendering from '../pages/admin/TicketRendering';
+import ExamCreate from '../pages/admin/ExamCreate';
 import LCManagement from '../pages/admin/LCManagement';
 import ApplyLC from '../pages/ApplyLC';
 import CertificateView from '../pages/CertificateView';
@@ -110,6 +111,7 @@ const AppRoutes = () => {
                         <Route path="admin" element={<AdminHome />} />
                         <Route path="admin/course-create" element={<CourseCreate />} />
                         <Route path="admin/all-courses" element={<AllCourses />} />
+                        <Route path="admin/exam-create" element={<ExamCreate />} />
                         <Route path="admin/approveleaves" element={<ApproveLeaves />} />
                         <Route path="admin/tickets" element={<TicketRendering />} />
                         <Route path="admin/lc-management" element={<LCManagement />} />

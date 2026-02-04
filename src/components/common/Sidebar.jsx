@@ -16,7 +16,8 @@ import {
     UserPlus,
     ClipboardCheck,
     BookPlus,
-    BookOpen
+    BookOpen,
+    ClipboardPlus
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -40,6 +41,7 @@ const sidebarItems = [
     { name: 'Course Allocation', icon: UserPlus, path: '/teacher/allotcourse', roles: ['teacher'] },
     { name: 'Create Course', icon: BookPlus, path: '/admin/course-create', roles: ['admin'] },
     { name: 'All Courses', icon: BookOpen, path: '/admin/all-courses', roles: ['admin'] },
+    { name: 'Create Exam', icon: ClipboardPlus, path: '/admin/exam-create', roles: ['admin'] },
     { name: 'Leaves', icon: UserPlus, path: '/teacher/leaves', roles: ['teacher'] },
     { name: 'Leave Requests', icon: UserPlus, path: '/admin/approveleaves', roles: ['admin'] },
     { name: 'University Leaving Cert', icon: FileText, path: '/apply-lc', roles: ['student'] },
