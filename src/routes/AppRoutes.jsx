@@ -32,6 +32,9 @@ import ApplyLeaves from '../pages/teacher/ApplyLeaveForm';
 import ApproveLeaves from '../pages/admin/AproveLeaves';
 import TeacherLeaves from '../pages/teacher/TeacherLeaves';
 import TicketRendering from '../pages/admin/TicketRendering';
+import LCManagement from '../pages/admin/LCManagement';
+import ApplyLC from '../pages/ApplyLC';
+import CertificateView from '../pages/CertificateView';
 
 const AppRoutes = () => {
     const { user } = useAuth();
@@ -47,6 +50,9 @@ const AppRoutes = () => {
             <Route path="/login" element={!user ? <Login /> : <Navigate to="/" replace />} />
             <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/" replace />} />
             <Route path="/signup-teacher" element={!user ? <SignupTeacher /> : <Navigate to="/" replace />} />
+
+            {/* Direct access to printable certificate for all roles once issued */}
+            <Route path="/certificate/:id" element={<ProtectedRoute><CertificateView /></ProtectedRoute>} />
 
             <Route
                 path="/"
@@ -83,6 +89,7 @@ const AppRoutes = () => {
                         <Route path="fees" element={<Fees />} />
                         <Route path="registration" element={<CourseRegistration />} />
                         <Route path="exams" element={<Exams />} />
+                        <Route path="apply-lc" element={<ApplyLC />} />
                     </>
                 )}
 
@@ -104,7 +111,8 @@ const AppRoutes = () => {
                         <Route path="admin/course-create" element={<CourseCreate />} />
                         <Route path="admin/all-courses" element={<AllCourses />} />
                         <Route path="admin/approveleaves" element={<ApproveLeaves />} />
-                        <Route path="admin/tickets" element= {<TicketRendering />} />
+                        <Route path="admin/tickets" element={<TicketRendering />} />
+                        <Route path="admin/lc-management" element={<LCManagement />} />
                     </>
                 )}
 
