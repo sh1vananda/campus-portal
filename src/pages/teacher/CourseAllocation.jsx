@@ -41,7 +41,7 @@ const CourseAllocation = () => {
       };
 
       const res = await fetch(
-        "https://rest-hhlo.onrender.com/api/courses/enroll-student",
+        "/api/courses/enroll-student",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

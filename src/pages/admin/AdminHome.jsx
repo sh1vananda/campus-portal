@@ -31,7 +31,7 @@ const AdminHome = () => {
                 const [coursesRes, leavesRes, ticketsRes] = await Promise.all([
                     fetch('/api/courses').then(res => res.json()).catch(() => []),
                     fetch('/api/leaves').then(res => res.json()).catch(() => ({ leaves: [] })),
-                    fetch('https://rest-hhlo.onrender.com/api/tickets/').then(res => res.json()).catch(() => [])
+                    fetch('/api/tickets/').then(res => res.json()).catch(() => [])
                 ]);
 
                 setStats({

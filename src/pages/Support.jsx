@@ -46,7 +46,7 @@ const Support = () => {
 
     try {
       const response = await fetch(
-        "https://rest-hhlo.onrender.com/api/tickets/",
+        "/api/tickets/",
         {
           method: "POST",
           headers: {
