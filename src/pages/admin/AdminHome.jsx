@@ -127,8 +127,8 @@ const AdminHome = () => {
                 <div className="bg-white border border-slate-100 rounded-[40px] p-8 shadow-sm">
                     <div className="flex justify-between items-center mb-6">
                         <h3 className="text-lg font-black text-slate-900 uppercase tracking-widest flex items-center gap-3">
-                            <Activity size={20} className="text-indigo-500" />
-                            System Health
+                            <Ticket size={20} className="text-indigo-500" />
+                            Open Tickets
                         </h3>
                         <Link to="/admin/tickets" className="text-[10px] font-black uppercase text-indigo-600 hover:underline">Ticket Registry</Link>
                     </div>

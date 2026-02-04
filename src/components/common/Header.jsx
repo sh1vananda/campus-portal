@@ -56,13 +56,15 @@ const Header = ({ onMenuClick }) => {
                   <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-0.5">{user?.role} Portal</p>
                 </div>
                 <div className="py-1">
-                  <Link
-                    to="/profile"
-                    onClick={() => setShowProfile(false)}
-                    className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-slate-50 w-full text-left font-medium transition-colors"
-                  >
-                    <User size={14} className="text-slate-400" /> My Profile
-                  </Link>
+                  {user?.role !== 'admin' && (
+                    <Link
+                      to="/profile"
+                      onClick={() => setShowProfile(false)}
+                      className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-slate-50 w-full text-left font-medium transition-colors"
+                    >
+                      <User size={14} className="text-slate-400" /> My Profile
+                    </Link>
+                  )}
                   <button
                     onClick={logout}
                     className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 w-full text-left font-medium border-t border-slate-100 mt-1 transition-colors"
