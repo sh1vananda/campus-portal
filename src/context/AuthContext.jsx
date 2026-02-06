@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password, role = 'student') => {
         try {
-            // Hardcoded Admin Login
+            // Development admin authentication
             if (role === 'admin' && email === 'admin@college.com' && password === 'admin123') {
                 const adminData = {
                     id: 'admin-001',

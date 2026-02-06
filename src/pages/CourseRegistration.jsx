@@ -13,7 +13,7 @@ const CourseRegistration = () => {
     const { courses: backendCourses, loading: coursesLoading, error: coursesError } = useCourseList();
     const [isRegistrationOpen] = useState(false);
 
-    // Initial state with mock data
+    // Fallback local course data
     const [availableCourses, setAvailableCourses] = useState([
         { id: "c1", code: "CSE301", title: "Database Systems", faculty: "Dr. Mehta", credits: 4, slot: "A1", category: "Core" },
         { id: "c2", code: "CSE302", title: "Computer Networks", faculty: "Dr. Rao", credits: 3, slot: "B1", category: "Core" },

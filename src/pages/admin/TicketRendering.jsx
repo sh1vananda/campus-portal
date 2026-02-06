@@ -88,7 +88,7 @@ const TicketRendering = () => {
       {loading ? (
         <div className="flex flex-col items-center justify-center py-20 gap-4">
           <Loader2 className="animate-spin text-slate-900" size={40} />
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Synchronizing Vault...</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Loading registry...</p>
         </div>
       ) : error ? (
         <div className="bg-red-50 border border-red-100 rounded-3xl p-10 text-center max-w-lg mx-auto">

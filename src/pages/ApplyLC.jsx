@@ -19,14 +19,14 @@ const ApplyLC = () => {
 
     const handleApply = () => {
         setLoading(true);
-        // Simulate API call
+        // Initialize local request process
         setTimeout(() => {
             const newRequest = {
                 id: Date.now().toString(),
                 studentName: user.name,
                 rollNo: user.rollNo,
                 department: user.department || "General Sciences",
-                yearOfJoining: "2022", // Mocked data
+                yearOfJoining: "2022",
                 status: "pending",
                 requestDate: new Date().toISOString()
             };
